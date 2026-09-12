@@ -1,0 +1,4727 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080a12">
+  <meta name="description" content="NekonyaS 的个人小角落。本站的主要功能，是让你访问本站。欢迎随便看看，开张废话小票，画两笔，再顺手叫 Neko 来坐坐。">
+  <link rel="icon" href="https://github.com/NekonyaS.png?size=64">
+  <link rel="apple-touch-icon" href="https://github.com/NekonyaS.png?size=180">
+  <title>NekonyaS · 一个已经打开的网站</title>
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080a12;
+      --card: rgba(16, 20, 33, .82);
+      --border: rgba(200, 213, 255, .12);
+      --text: #f2f4ff;
+      --muted: #a3abc0;
+      --purple: #a599ff;
+      --cyan: #75ddf7;
+      --green: #81e8b0;
+      --mono: Consolas, "SFMono-Regular", "Microsoft YaHei", "Noto Sans CJK SC", monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 24px;
+    }
+
+    body {
+      margin: 0;
+      min-width: 280px;
+      background:
+        radial-gradient(ellipse at 18% 8%, rgba(122, 93, 230, .12), transparent 40%),
+        radial-gradient(ellipse at 88% 26%, rgba(42, 138, 173, .09), transparent 35%),
+        var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection { color: #fff; background: #6658a0; }
+    a { color: inherit; }
+    button, input, textarea, select { font: inherit; }
+    button, a, input, textarea, select, summary, canvas { -webkit-tap-highlight-color: transparent; }
+    button { cursor: pointer; }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible,
+    summary:focus-visible,
+    canvas:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    button, .btn { touch-action: manipulation; }
+
+    button:disabled {
+      cursor: default;
+      opacity: .45;
+      transform: none !important;
+    }
+
+    [hidden] { display: none !important; }
+
+    #stars, #cursorGlow {
+      position: fixed;
+      pointer-events: none;
+    }
+
+    #stars {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    #cursorGlow {
+      width: 360px;
+      height: 360px;
+      z-index: 0;
+      opacity: 0;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(140, 122, 247, .09), transparent 68%);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      width: min(1050px, calc(100% - 40px));
+      margin: 0 auto;
+      padding: 38px 0 45px;
+    }
+
+    .skip-link {
+      position: fixed;
+      top: -100px;
+      left: 18px;
+      z-index: 200;
+      padding: 10px 15px;
+      background: #171d32;
+      border-radius: 8px;
+    }
+
+    .skip-link:focus { top: 12px; }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 62px;
+    }
+
+    .logo {
+      font: 700 17px var(--mono);
+      letter-spacing: .5px;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .logo span { color: var(--cyan); }
+
+    .navlinks {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 15px;
+    }
+
+    .navlinks a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+      transition: color .2s;
+    }
+
+    .navlinks a:hover { color: var(--text); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 340px;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 5px 12px;
+      color: var(--green);
+      font-size: 12px;
+      background: rgba(108, 230, 165, .05);
+      border: 1px solid rgba(108, 230, 165, .22);
+      border-radius: 30px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 12px rgba(129, 232, 176, .4);
+    }
+
+    h1 {
+      font-size: clamp(42px, 6.8vw, 76px);
+      line-height: 1.12;
+      letter-spacing: -.045em;
+      margin: 24px 0 18px;
+    }
+
+    h1 small {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 24px;
+      font-weight: 500;
+      letter-spacing: .035em;
+      color: #d3d8ea;
+    }
+
+    .gradient {
+      color: #c2b9ff;
+      background: linear-gradient(100deg, #f4f1ff 0%, #b1a3ff 48%, #77dcf4 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .typing {
+      min-height: 54px;
+      font-family: var(--mono);
+      color: var(--cyan);
+      font-size: 14px;
+      max-width: 560px;
+    }
+
+    .typing::after {
+      content: "_";
+      margin-left: 2px;
+      color: var(--purple);
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.95;
+      margin: 3px 0 0;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 25px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      min-height: 43px;
+      padding: 9px 15px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      background: rgba(255,255,255,.035);
+      font-size: 13px;
+      text-decoration: none;
+      transition: border-color .2s, background .2s, transform .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      background: rgba(139,124,255,.10);
+      border-color: rgba(165,153,255,.55);
+    }
+
+    .btn.primary {
+      background: rgba(139,124,255,.12);
+      border-color: rgba(165,153,255,.3);
+    }
+
+    .avatarBox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .avatarWrap {
+      position: relative;
+      width: 340px;
+      height: 340px;
+      border-radius: 34%;
+      overflow: visible;
+      background: transparent;
+      box-shadow:
+        0 0 0 7px rgba(165,153,255,.05),
+        0 16px 50px rgba(0,0,0,.22),
+        0 0 90px rgba(139,124,255,.24);
+      transition: transform .45s ease;
+    }
+
+    .avatar,
+    .avatar:hover {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border: 1px solid rgba(203,197,255,.3);
+      border-radius: inherit;
+      transform: none;
+      box-shadow: none;
+      transition: none;
+    }
+
+    .avatar[hidden] { display: none; }
+
+    .avatarFallback {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      border-radius: inherit;
+      border: 1px solid rgba(203,197,255,.25);
+      background: linear-gradient(140deg, #292548, #122334);
+      color: #c6bdff;
+      font: 700 90px var(--mono);
+      box-shadow: none;
+    }
+
+    .avatarStatus {
+      position: absolute;
+      right: 6%;
+      bottom: 6%;
+      width: 24px;
+      height: 24px;
+      z-index: 2;
+      background: var(--green);
+      border: 5px solid #0d101b;
+      border-radius: 50%;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .avatarWrap:hover {
+        transform: translateY(-4px) rotate(2deg);
+      }
+    }
+
+    .avatarCaption {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 22px;
+      letter-spacing: .04em;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 15px;
+      margin: 38px 0 16px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--card);
+      padding: 21px;
+    }
+
+    .cardTitle {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .12em;
+      margin: 0 0 10px;
+    }
+
+    .big {
+      font-family: var(--mono);
+      font-size: 23px;
+      line-height: 1.5;
+    }
+
+    .green { color: var(--green); }
+
+    .small {
+      font-size: 11px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin: 7px 0 0;
+    }
+
+    .quoteBox {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 22px;
+      padding: 19px 22px;
+      border: 1px solid rgba(165,153,255,.19);
+      border-radius: 16px;
+      background: linear-gradient(115deg, rgba(139,124,255,.09), rgba(60,148,173,.045));
+      margin-bottom: 21px;
+    }
+
+    .quoteBox .cardTitle {
+      color: #b7a9ef;
+      margin-bottom: 5px;
+    }
+
+    #quote {
+      font-size: 14px;
+      margin: 0;
+    }
+
+    .quoteBox .btn {
+      flex-shrink: 0;
+      font-size: 12px;
+    }
+
+    .terminal {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(5,8,15,.92);
+    }
+
+    .terminalHeader {
+      min-height: 43px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 16px;
+      background: rgba(255,255,255,.035);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .lights {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .circle {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .red { background: #ed8596; }
+    .yellow { background: #e9c27b; }
+    .greenCircle { background: #82cba0; }
+
+    .terminalTitle {
+      font: 12px var(--mono);
+      font-weight: 400;
+      color: var(--muted);
+      margin: 0 0 0 8px;
+    }
+
+    .terminalHint {
+      margin-left: auto;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    #terminalOutput {
+      height: 238px;
+      padding: 19px 20px 10px;
+      overflow: auto;
+      font: 13px/1.9 var(--mono);
+      scrollbar-width: thin;
+      scrollbar-color: #41485b transparent;
+    }
+
+    .terminal-line {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      margin-bottom: 10px;
+      color: #c8d0e3;
+    }
+
+    .terminal-line.user { color: var(--green); }
+    .terminal-line.error { color: #f2a0b0; }
+
+    .terminal-line a {
+      color: var(--cyan);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .commandLine {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px 17px;
+      border-top: 1px solid rgba(255,255,255,.04);
+    }
+
+    .prompt {
+      font: 13px var(--mono);
+      color: var(--green);
+      white-space: nowrap;
+    }
+
+    #command {
+      width: 100%;
+      min-width: 0;
+      flex: 1;
+      color: var(--text);
+      background: transparent;
+      border: none;
+      border-radius: 3px;
+      outline-offset: 2px;
+      font-family: var(--mono);
+      font-size: 14px;
+      padding: 6px 2px;
+    }
+
+    #command::placeholder {
+      color: #8792aa;
+      opacity: 1;
+    }
+
+    .send {
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: rgba(255,255,255,.025);
+      padding: 5px 10px;
+      white-space: nowrap;
+      font-size: 12px;
+    }
+
+    .send:hover {
+      color: var(--text);
+      border-color: var(--purple);
+    }
+
+    .contentSection { margin-top: 38px; }
+
+    .sectionTitle {
+      margin: 0 0 17px;
+      font-size: 19px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .sectionTitle span {
+      color: var(--purple);
+      font-family: var(--mono);
+      margin-right: 7px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .project {
+      transition: border-color .2s, transform .2s;
+    }
+
+    .project:hover {
+      border-color: rgba(165,153,255,.35);
+      transform: translateY(-3px);
+    }
+
+    .project h3 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 0 0 9px;
+    }
+
+    .project p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.9;
+      margin: 0;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 15px;
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      background: rgba(139,124,255,.075);
+      border: 1px solid rgba(139,124,255,.13);
+      color: #bab1ed;
+    }
+
+    footer {
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 44px;
+      line-height: 2;
+    }
+
+    footer p { margin: 0; }
+
+    .secret {
+      border: none;
+      background: transparent;
+      padding: 8px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .secret:hover { color: var(--purple); }
+
+    #toast {
+      position: fixed;
+      bottom: max(20px, env(safe-area-inset-bottom));
+      left: 50%;
+      z-index: 100;
+      transform: translate(-50%, 16px);
+      width: max-content;
+      max-width: calc(100vw - 36px);
+      padding: 12px 18px;
+      border: 1px solid rgba(165,153,255,.35);
+      border-radius: 12px;
+      color: var(--text);
+      background: #181c2d;
+      font-size: 13px;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .2s, transform .2s;
+      box-shadow: 0 8px 30px rgba(0,0,0,.25);
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .floating-cat {
+      position: fixed;
+      z-index: 60;
+      pointer-events: none;
+      user-select: none;
+      font-size: 40px;
+      line-height: 1;
+      transition: transform 1.4s ease-out, opacity 1.4s ease-out;
+    }
+
+    .floating-cat.leaving {
+      transform: translateY(-72px) rotate(16deg);
+      opacity: 0;
+    }
+
+    noscript p {
+      border: 1px solid var(--border);
+      background: var(--card);
+      padding: 14px;
+      border-radius: 12px;
+      color: var(--muted);
+    }
+
+    .playground { margin-top: 43px; }
+
+    .section-heading {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .section-heading .sectionTitle { margin-bottom: 4px; }
+
+    .section-subtitle {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .toy-card {
+      min-width: 0;
+      position: relative;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .toy-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 11px;
+    }
+
+    .toy-head h3 {
+      font-size: 17px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    .toy-number {
+      font: 11px var(--mono);
+      color: #7b859f;
+      letter-spacing: .1em;
+    }
+
+    .toy-intro {
+      margin: 0 0 19px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .toy-label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .toy-input,
+    .toy-textarea,
+    .toy-select {
+      min-width: 0;
+      width: 100%;
+      border: 1px solid rgba(200,213,255,.16);
+      border-radius: 9px;
+      background: #0c1020;
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .toy-input::placeholder,
+    .toy-textarea::placeholder {
+      color: #8691aa;
+      opacity: 1;
+    }
+
+    .toy-textarea {
+      resize: vertical;
+      min-height: 89px;
+      max-height: 220px;
+      display: block;
+    }
+
+    .input-action {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .input-action .btn { flex-shrink: 0; }
+
+    .toy-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .toy-actions .btn {
+      font-size: 12px;
+      padding: 7px 11px;
+      min-height: 36px;
+    }
+
+    .local-note {
+      display: block;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.8;
+    }
+
+    .receipt-card {
+      background: linear-gradient(150deg, rgba(52,43,83,.33), rgba(16,20,33,.93));
+    }
+
+    .receipt {
+      color-scheme: light;
+      color: #34323d;
+      background: #f2eee6;
+      max-width: 344px;
+      margin: 23px auto 12px;
+      padding: 22px 23px 26px;
+      box-shadow: 0 10px 22px rgba(0,0,0,.17);
+      transform: rotate(-.65deg);
+      font-family: var(--mono);
+      font-size: 11px;
+      clip-path: polygon(0 0,100% 0,100% calc(100% - 7px),97% 100%,94% calc(100% - 7px),91% 100%,88% calc(100% - 7px),85% 100%,82% calc(100% - 7px),79% 100%,76% calc(100% - 7px),73% 100%,70% calc(100% - 7px),67% 100%,64% calc(100% - 7px),61% 100%,58% calc(100% - 7px),55% 100%,52% calc(100% - 7px),49% 100%,46% calc(100% - 7px),43% 100%,40% calc(100% - 7px),37% 100%,34% calc(100% - 7px),31% 100%,28% calc(100% - 7px),25% 100%,22% calc(100% - 7px),19% 100%,16% calc(100% - 7px),13% 100%,10% calc(100% - 7px),7% 100%,4% calc(100% - 7px),0 100%);
+    }
+
+    .receipt-head {
+      text-align: center;
+      border-bottom: 1px dashed #aaa5a5;
+      padding-bottom: 12px;
+    }
+
+    .receipt-head strong {
+      display: block;
+      font-size: 18px;
+      letter-spacing: .12em;
+    }
+
+    .receipt-head small {
+      display: block;
+      margin-top: 4px;
+      font-size: 10px;
+      color: #66616c;
+    }
+
+    .receipt-meta {
+      display: flex;
+      justify-content: space-between;
+      margin: 13px 0;
+      font-size: 10px;
+      color: #66616c;
+    }
+
+    .receipt-topic {
+      margin: 0 0 7px;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .receipt-body {
+      min-height: 62px;
+      margin: 0;
+      line-height: 1.85;
+      overflow-wrap: anywhere;
+    }
+
+    .receipt-total {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px dashed #aaa5a5;
+      margin-top: 13px;
+      padding-top: 10px;
+    }
+
+    .receipt-total strong { font-size: 15px; }
+
+    .receipt-bottom {
+      text-align: center;
+      color: #6b6570;
+      font-size: 10px;
+      margin: 10px 0 0;
+    }
+
+    .receipt-bars {
+      width: 115px;
+      height: 17px;
+      margin: 11px auto 3px;
+      opacity: .55;
+      background: repeating-linear-gradient(
+        90deg,
+        #373340 0 2px,
+        transparent 2px 4px,
+        #373340 4px 5px,
+        transparent 5px 8px,
+        #373340 8px 11px,
+        transparent 11px 13px
+      );
+    }
+
+    .receipt-save {
+      display: block;
+      margin: 10px auto 0;
+      border: 0;
+      background: none;
+      color: var(--muted);
+      font-size: 11px;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      padding: 7px 12px;
+    }
+
+    .cat-desk {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 9px 0 20px;
+      padding: 15px 17px;
+      background: rgba(139,124,255,.04);
+      border: 1px solid rgba(165,153,255,.12);
+      border-radius: 12px;
+      gap: 12px;
+    }
+
+    .desk-cat {
+      border: 0;
+      background: transparent;
+      color: #c5b9f8;
+      padding: 6px;
+      font: 15px/1.35 var(--mono);
+      white-space: pre;
+    }
+
+    .desk-copy {
+      text-align: right;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .desk-copy strong {
+      color: var(--green);
+      font-weight: 400;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .cat-reply {
+      position: relative;
+      margin-top: 20px;
+      padding: 15px 16px;
+      border: 1px dashed rgba(165,153,255,.3);
+      border-radius: 10px;
+    }
+
+    .cat-reply .toy-label { color: var(--purple); }
+
+    #catReply {
+      margin: 5px 0 0;
+      font-size: 12px;
+      white-space: pre-line;
+      color: #d2d5e8;
+      line-height: 1.9;
+      overflow-wrap: anywhere;
+    }
+
+    #quotedOpinion {
+      color: var(--muted);
+      margin: 7px 0 0;
+      font-size: 11px;
+      overflow-wrap: anywhere;
+    }
+
+    .drawing-wrap {
+      position: relative;
+      background-color: #eeebe4;
+      background-image: radial-gradient(#cfc9c4 1px, transparent 1px);
+      background-size: 18px 18px;
+      border: 1px solid rgba(200,213,255,.13);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    #doodle {
+      display: block;
+      width: 100%;
+      aspect-ratio: 8 / 5;
+      cursor: crosshair;
+      touch-action: none;
+    }
+
+    .drawing-hint {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      pointer-events: none;
+      color: #7b7281;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .drawing-hint strong {
+      font-size: 27px;
+      line-height: 1.2;
+      font-weight: 400;
+      color: #978998;
+      margin-bottom: 12px;
+    }
+
+    .drawing-hint small {
+      font-size: 10px;
+      color: #877d86;
+      margin-top: 4px;
+    }
+
+    .drawing-tools {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .swatches {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .swatch {
+      display: grid;
+      place-items: center;
+      background: transparent;
+      width: 31px;
+      height: 33px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+    }
+
+    .swatch::after {
+      content: '';
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--ink);
+      border: 1px solid rgba(255,255,255,.32);
+    }
+
+    .swatch[aria-pressed="true"] {
+      border-color: var(--purple);
+      background: rgba(165,153,255,.12);
+    }
+
+    .brush-size {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    #brushSize {
+      width: 67px;
+      accent-color: var(--purple);
+    }
+
+    .loader-stage {
+      border: 1px solid rgba(117,221,247,.14);
+      background: linear-gradient(145deg, rgba(24,65,81,.17), rgba(139,124,255,.035));
+      border-radius: 12px;
+      padding: 21px 20px;
+      margin-top: 19px;
+      min-height: 187px;
+    }
+
+    .loader-value {
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      font-family: var(--mono);
+      color: var(--cyan);
+      margin-bottom: 12px;
+    }
+
+    #loadNumber {
+      font-size: 43px;
+      line-height: 1.2;
+      letter-spacing: -.03em;
+    }
+
+    .loader-value span:last-child { font-size: 17px; }
+
+    .track {
+      height: 6px;
+      border-radius: 8px;
+      background: #222b3d;
+      overflow: hidden;
+    }
+
+    #loadFill {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      border-radius: inherit;
+    }
+
+    #loadStatus {
+      min-height: 39px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .scene-card { padding-bottom: 21px; }
+
+    .scene {
+      position: relative;
+      height: 174px;
+      border: 1px solid rgba(160,175,220,.2);
+      border-radius: 12px;
+      overflow: hidden;
+      background: linear-gradient(180deg, #17213a 0%, #313e65 100%);
+      margin: 10px 0 13px;
+      isolation: isolate;
+    }
+
+    .scene[data-sky="dawn"] {
+      background: linear-gradient(180deg, #706091, #c192a3 70%, #e4b9a4);
+    }
+
+    .scene[data-sky="day"] {
+      background: linear-gradient(180deg, #779eb7, #b7d0d2);
+    }
+
+    .scene-light {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      right: 21%;
+      top: 20%;
+      background: #f3efd9;
+      border-radius: 50%;
+    }
+
+    .scene[data-sky="night"] .scene-light {
+      background: transparent;
+      box-shadow: 6px 3px 0 0 #ede5d0;
+      transform: translateX(-6px);
+    }
+
+    .scene[data-sky="dawn"] .scene-light {
+      background: #f4d3b0;
+      top: 42%;
+    }
+
+    .scene-hill {
+      position: absolute;
+      height: 110px;
+      width: 90%;
+      border-radius: 50% 50% 0 0;
+      bottom: -64px;
+      left: -12%;
+      background: #46547a;
+      transform: rotate(7deg);
+    }
+
+    .scene-hill.back {
+      left: 32%;
+      bottom: -58px;
+      background: #37435f;
+      transform: rotate(-8deg);
+    }
+
+    .scene[data-sky="day"] .scene-hill { background: #668f89; }
+    .scene[data-sky="day"] .scene-hill.back { background: #7aa099; }
+    .scene[data-sky="dawn"] .scene-hill { background: #736a8d; }
+    .scene[data-sky="dawn"] .scene-hill.back { background: #8e7b97; }
+
+    .scene-cloud {
+      position: absolute;
+      top: 38px;
+      left: 8%;
+      width: 70px;
+      height: 10px;
+      border-radius: 30px;
+      background: rgba(238,237,244,.22);
+      animation: cloud-drift 14s ease-in-out infinite alternate;
+    }
+
+    .scene-cloud::before {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: inherit;
+      width: 25px;
+      height: 18px;
+      left: 13px;
+      top: -10px;
+    }
+
+    .scene-cloud.second {
+      left: 61%;
+      top: 81px;
+      width: 50px;
+      opacity: .7;
+      animation-delay: -5s;
+    }
+
+    .scene-caption {
+      position: absolute;
+      top: 12px;
+      left: 13px;
+      font: 9px var(--mono);
+      letter-spacing: .14em;
+      color: rgba(255,255,255,.77);
+    }
+
+    .scene-cat {
+      position: absolute;
+      bottom: 4px;
+      left: 25px;
+      z-index: 2;
+      color: #dad8ec;
+      font: 16px/1.15 var(--mono);
+      white-space: pre;
+      padding: 4px 8px;
+      border: none;
+      background: rgba(13,19,35,.5);
+      border-radius: 8px;
+    }
+
+    .scene-sill {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 9px;
+      background: rgba(13,19,35,.65);
+    }
+
+    @keyframes cloud-drift {
+      from { transform: translateX(0); }
+      to { transform: translateX(35px); }
+    }
+
+    .scene-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .scene-options .btn {
+      min-height: 34px;
+      padding: 6px 12px;
+      font-size: 11px;
+    }
+
+    .scene-options .btn[aria-pressed="true"] {
+      color: var(--cyan);
+      background: rgba(117,221,247,.07);
+      border-color: rgba(117,221,247,.3);
+    }
+
+    .archives { border-top: 1px solid var(--border); }
+    .archives details { border-bottom: 1px solid var(--border); }
+
+    .archives summary {
+      padding: 13px 0;
+      font-size: 12px;
+      cursor: pointer;
+      color: #d1d6e7;
+    }
+
+    .archives summary::marker { color: var(--purple); }
+
+    .archives details p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
+      padding: 0 7px 15px;
+      margin: 0;
+    }
+
+    .privacy-line {
+      color: var(--muted);
+      font-size: 10px;
+      margin: 16px 0 0;
+      line-height: 1.9;
+    }
+
+    .privacy-line a {
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+    }
+
+    .bottom-links {
+      display: flex;
+      justify-content: center;
+      gap: 13px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+
+    .bottom-links button,
+    .bottom-links a {
+      color: var(--muted);
+      font-size: 11px;
+      padding: 4px 6px;
+      background: transparent;
+      border: 0;
+      text-decoration: none;
+    }
+
+    .bottom-links button:hover,
+    .bottom-links a:hover {
+      color: var(--purple);
+    }
+
+    .visitor-station { margin: 35px 0 28px; }
+    .visitor-station .sectionTitle span { color: var(--cyan); }
+
+    .signal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      flex-shrink: 0;
+      padding: 6px 10px;
+      border: 1px solid rgba(117,221,247,.2);
+      color: var(--cyan);
+      background: rgba(117,221,247,.04);
+      border-radius: 6px;
+      font: 10px var(--mono);
+    }
+
+    .signal-badge i {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .signal-badge[data-state="error"] {
+      color: #e3be87;
+      border-color: rgba(227,190,135,.2);
+    }
+
+    .signal-badge[data-state="ready"] {
+      color: var(--green);
+      border-color: rgba(129,232,176,.2);
+    }
+
+    .signal-shell {
+      position: relative;
+      isolation: isolate;
+      padding: 0 27px 20px;
+      overflow: hidden;
+      border: 1px solid rgba(117,221,247,.24);
+      border-radius: 18px;
+      background:
+        radial-gradient(ellipse at 93% 20%, rgba(57,145,171,.11), transparent 54%),
+        linear-gradient(130deg, rgba(12,23,37,.97), rgba(15,16,31,.97));
+      box-shadow: 0 15px 55px rgba(0,0,0,.13);
+    }
+
+    .signal-shell::before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      pointer-events: none;
+      opacity: .55;
+      background-image:
+        linear-gradient(rgba(117,221,247,.024) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(117,221,247,.024) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(90deg, transparent, black);
+    }
+
+    .signal-shell::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -22%;
+      width: 22%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      box-shadow: 0 0 13px rgba(117,221,247,.55);
+      animation: signal-edge 9s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes signal-edge {
+      to { left: 120%; }
+    }
+
+    .signal-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      min-height: 54px;
+      border-bottom: 1px solid rgba(117,221,247,.09);
+    }
+
+    .signal-kicker {
+      color: #8ba5b7;
+      font: 10px var(--mono);
+      letter-spacing: .14em;
+    }
+
+    .signal-tools {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .signal-textbtn {
+      border: 0;
+      background: transparent;
+      padding: 7px 0 7px 9px;
+      color: var(--cyan);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .signal-textbtn:hover { color: #c4f1ff; }
+
+    .signal-body {
+      display: grid;
+      grid-template-columns: minmax(0,1.55fr) minmax(225px,1fr);
+      align-items: center;
+      gap: 20px;
+      padding: 23px 0 21px;
+    }
+
+    .signal-main { min-width: 0; }
+
+    .origin-intro {
+      color: #a2b7c7;
+      font-size: 12px;
+      margin: 0 0 6px;
+    }
+
+    #originCountry {
+      margin: 0;
+      font-size: clamp(27px,3.3vw,38px);
+      font-weight: 500;
+      line-height: 1.4;
+      letter-spacing: .025em;
+      overflow-wrap: anywhere;
+    }
+
+    #originDetail {
+      color: var(--cyan);
+      min-height: 23px;
+      font-size: 13px;
+      margin: 4px 0 0;
+      overflow-wrap: anywhere;
+    }
+
+    .ip-block {
+      padding: 16px 0 12px;
+      margin-top: 4px;
+    }
+
+    .ip-heading {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .signal-label {
+      color: #93a8bd;
+      font: 10px var(--mono);
+      letter-spacing: .07em;
+    }
+
+    #ipVersion {
+      font: 9px var(--mono);
+      padding: 1px 6px;
+      color: var(--cyan);
+      border: 1px solid rgba(117,221,247,.23);
+      border-radius: 4px;
+    }
+
+    .ip-line {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px 15px;
+    }
+
+    #publicIP {
+      font: 24px/1.6 var(--mono);
+      letter-spacing: .035em;
+      overflow-wrap: anywhere;
+      min-width: 0;
+      max-width: 100%;
+      user-select: all;
+      color: #e3f6ff;
+    }
+
+    #publicIP.ipv6 { font-size: 18px; }
+
+    #copyIP {
+      font-size: 10px;
+      padding: 5px 0;
+    }
+
+    .network-owner {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 13px;
+      border-top: 1px solid rgba(117,221,247,.09);
+      padding-top: 11px;
+    }
+
+    .network-owner p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    #visitorASN {
+      font-family: var(--mono);
+      color: #c4b8f6;
+    }
+
+    .orb-panel {
+      position: relative;
+      min-width: 0;
+      align-self: stretch;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .orb-art {
+      position: relative;
+      width: min(100%,300px);
+      aspect-ratio: 1.12;
+    }
+
+    #visitorOrb {
+      display: block;
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .orb-greeting {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%,-50%);
+      width: 76%;
+      padding: 14px 10px 12px;
+      text-align: center;
+      border: 1px solid rgba(130,206,234,.24);
+      border-radius: 10px;
+      background: linear-gradient(125deg, rgba(16,35,53,.78), rgba(20,22,43,.82));
+      box-shadow:
+        0 8px 30px rgba(0,0,0,.18),
+        inset 0 1px 0 rgba(203,237,255,.035);
+    }
+
+    .orb-greeting::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      pointer-events: none;
+      opacity: .62;
+      background:
+        linear-gradient(var(--cyan),var(--cyan)) left top / 12px 1px no-repeat,
+        linear-gradient(var(--cyan),var(--cyan)) left top / 1px 10px no-repeat,
+        linear-gradient(var(--purple),var(--purple)) right top / 12px 1px no-repeat,
+        linear-gradient(var(--purple),var(--purple)) right top / 1px 10px no-repeat,
+        linear-gradient(var(--purple),var(--purple)) left bottom / 12px 1px no-repeat,
+        linear-gradient(var(--purple),var(--purple)) left bottom / 1px 10px no-repeat,
+        linear-gradient(var(--cyan),var(--cyan)) right bottom / 12px 1px no-repeat,
+        linear-gradient(var(--cyan),var(--cyan)) right bottom / 1px 10px no-repeat;
+    }
+
+    .orb-greeting::after {
+      content: '';
+      position: absolute;
+      left: 20%;
+      top: -1px;
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #b4e9f7, transparent);
+      box-shadow: 0 0 10px rgba(117,221,247,.22);
+    }
+
+    .orb-greeting small {
+      display: block;
+      font: 8px var(--mono);
+      letter-spacing: .2em;
+      color: #99bacb;
+    }
+
+    .orb-greeting strong {
+      display: block;
+      margin: 8px 0 5px;
+      color: #d6f3ff;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: .10em;
+      text-indent: .10em;
+      white-space: nowrap;
+      background: linear-gradient(100deg, #e2f6ff, #b2e5f8 52%, #cec3ff);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .orb-message {
+      margin: 0;
+      color: #aac3d3;
+      font-size: 10px;
+      line-height: 1.9;
+    }
+
+    .orb-signature {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      border-top: 1px solid rgba(132,186,211,.13);
+      margin-top: 10px;
+      padding-top: 8px;
+      color: #a9a2ca;
+      font: 8px var(--mono);
+      letter-spacing: .08em;
+    }
+
+    .orb-waves {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 10px;
+    }
+
+    .orb-waves i {
+      display: block;
+      width: 2px;
+      height: var(--bar,7px);
+      border-radius: 2px;
+      background: linear-gradient(var(--cyan),var(--purple));
+      opacity: .65;
+      animation: greeting-wave 2.4s ease-in-out infinite alternate;
+      animation-delay: var(--delay,0s);
+    }
+
+    @keyframes greeting-wave {
+      from { transform: scaleY(.45); opacity: .35; }
+      to { transform: scaleY(1); opacity: .8; }
+    }
+
+    .orb-note {
+      color: #8da2b9;
+      font: 10px var(--mono);
+      margin-top: -3px;
+      text-align: center;
+    }
+
+    .signal-metrics {
+      display: grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap: 10px;
+    }
+
+    .signal-metric {
+      min-width: 0;
+      border: 1px solid rgba(117,221,247,.11);
+      background: rgba(8,14,27,.42);
+      border-radius: 9px;
+      padding: 13px 12px;
+    }
+
+    .signal-metric .signal-label { font-size: 9px; }
+
+    .signal-value {
+      display: block;
+      margin: 7px 0 4px;
+      font: 15px/1.45 var(--mono);
+      color: #d4e3ee;
+      overflow-wrap: anywhere;
+    }
+
+    .signal-sub {
+      display: block;
+      color: #92a3b9;
+      font-size: 10px;
+      line-height: 1.7;
+      overflow-wrap: anywhere;
+    }
+
+    .signal-bottom {
+      display: grid;
+      grid-template-columns: minmax(0,1.25fr) minmax(0,1fr);
+      gap: 18px;
+      margin-top: 15px;
+    }
+
+    .signal-log { min-width: 0; }
+
+    .signal-log-title {
+      color: #7f9aaf;
+      font: 9px var(--mono);
+      letter-spacing: .1em;
+      margin-bottom: 5px;
+    }
+
+    #signalLog {
+      font: 10px/1.9 var(--mono);
+      color: #a6bdca;
+      height: 61px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    #signalLog p {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    #signalLog time {
+      color: #70889d;
+      margin-right: 9px;
+    }
+
+    .signal-readout {
+      text-align: right;
+      color: #91a4b8;
+      font-size: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    #queryState { color: #acc5d0; }
+
+    #queryDuration {
+      font-family: var(--mono);
+      color: #b4a7e4;
+    }
+
+    .signal-disclosure {
+      margin-top: 14px;
+      border-top: 1px solid rgba(117,221,247,.09);
+      padding-top: 11px;
+      font-size: 10px;
+      color: #91a6b9;
+      line-height: 1.9;
+    }
+
+    .signal-disclosure p { margin: 0; }
+    .signal-disclosure details { margin-top: 4px; }
+
+    .signal-disclosure summary {
+      cursor: pointer;
+      color: #a3becb;
+      width: fit-content;
+    }
+
+    .signal-disclosure details p { margin-top: 6px; }
+
+    .signal-disclosure a {
+      text-underline-offset: 3px;
+      color: #b3cad6;
+    }
+
+    .heading-icon {
+      display: inline-block;
+      width: 1.17em;
+      height: 1.17em;
+      margin-right: .5em;
+      vertical-align: -.19em;
+      fill: none;
+      stroke: var(--cyan);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .heading-icon .icon-shine { stroke: var(--purple); }
+
+    @media (max-width: 740px) {
+      .container {
+        width: min(560px, calc(100% - 32px));
+        padding-top: 25px;
+      }
+
+      nav {
+        margin-bottom: 35px;
+        align-items: flex-start;
+      }
+
+      .navlinks {
+        max-width: 220px;
+        column-gap: 12px;
+        row-gap: 8px;
+      }
+
+      .navlinks a { font-size: 11px; }
+      .logo { padding-top: 4px; }
+
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 28px;
+        text-align: center;
+      }
+
+      .avatarBox { grid-row: 1; }
+
+      .avatarWrap {
+        width: 220px;
+        height: 220px;
+      }
+
+      .avatarStatus {
+        width: 22px;
+        height: 22px;
+        border-width: 4px;
+      }
+
+      .avatarCaption { margin-top: 17px; }
+
+      h1 {
+        margin-top: 21px;
+        font-size: clamp(42px, 11vw, 64px);
+      }
+
+      h1 small { font-size: 20px; }
+
+      .typing {
+        font-size: 13px;
+        max-width: 450px;
+        margin: auto;
+      }
+
+      .desc { font-size: 13px; }
+      .buttons { justify-content: center; }
+      .btn { padding: 9px 12px; }
+
+      .stats {
+        gap: 10px;
+        margin-top: 29px;
+      }
+
+      .stats .card { padding: 15px 12px; }
+      .stats .big { font-size: 18px; }
+      .cardTitle { font-size: 10px; }
+      .stats .small { font-size: 10px; }
+
+      .quoteBox {
+        padding: 16px;
+        gap: 12px;
+      }
+
+      .quoteBox .btn { padding: 7px 10px; }
+      .terminalHint { display: none; }
+      .terminalTitle { font-size: 11px; }
+
+      .commandLine {
+        gap: 7px;
+        padding: 12px 13px 15px;
+      }
+
+      .prompt { font-size: 12px; }
+
+      #command,
+      .toy-input,
+      .toy-textarea,
+      .toy-select {
+        font-size: 16px;
+      }
+
+      #terminalOutput {
+        font-size: 12px;
+        padding: 15px;
+      }
+
+      .projects,
+      .toy-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .sectionTitle { font-size: 17px; }
+      .toy-card { padding: 20px; }
+      .playground { margin-top: 32px; }
+      .section-heading { align-items: flex-start; }
+      .receipt { max-width: 330px; }
+      .visitor-station { margin-top: 29px; }
+      .signal-shell { padding: 0 19px 17px; }
+
+      .signal-body {
+        grid-template-columns: minmax(0,1.4fr) minmax(100px,.6fr);
+        gap: 5px;
+        padding: 19px 0;
+      }
+
+      .orb-panel {
+        align-self: start;
+        padding-top: 28px;
+      }
+
+      .orb-art {
+        width: 140px;
+        max-width: 150%;
+      }
+
+      .orb-greeting {
+        width: 90%;
+        padding: 10px 5px 8px;
+        border-radius: 8px;
+      }
+
+      .orb-greeting small {
+        font-size: 6px;
+        letter-spacing: .11em;
+      }
+
+      .orb-greeting strong {
+        font-size: 16px;
+        margin: 6px 0 4px;
+        letter-spacing: .05em;
+      }
+
+      .orb-message {
+        font-size: 8px;
+        max-width: 103px;
+        margin: auto;
+        line-height: 1.75;
+      }
+
+      .orb-signature {
+        font-size: 6px;
+        gap: 5px;
+        margin-top: 7px;
+        padding-top: 6px;
+      }
+
+      .orb-waves { height: 8px; gap: 1px; }
+      .orb-waves i { width: 1.5px; }
+      .orb-greeting::before { inset: -4px; opacity: .45; }
+      .orb-note { font-size: 8px; max-width: 105px; }
+
+      #originCountry { font-size: 25px; }
+      #originDetail { font-size: 11px; }
+      #publicIP { font-size: 20px; }
+      #publicIP.ipv6 { font-size: 15px; }
+
+      .network-owner {
+        grid-template-columns: minmax(0,1fr);
+        gap: 8px;
+      }
+
+      .network-owner > div:last-child {
+        display: flex;
+        gap: 10px;
+        align-items: baseline;
+      }
+
+      .network-owner > div:last-child p { margin: 0; }
+
+      .signal-metrics {
+        grid-template-columns: repeat(2,minmax(0,1fr));
+        gap: 9px;
+      }
+
+      .signal-metric { padding: 12px; }
+      .signal-metric:first-child { grid-column: 1 / -1; }
+      .signal-value { font-size: 14px; }
+
+      .signal-bottom {
+        grid-template-columns: minmax(0,1fr);
+        gap: 9px;
+      }
+
+      .signal-readout {
+        text-align: left;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 5px 12px;
+      }
+
+      .signal-badge { font-size: 9px; padding: 5px 7px; }
+      .signal-kicker { font-size: 9px; letter-spacing: .08em; }
+    }
+
+    @media (max-width: 400px) {
+      .navlinks { gap: 12px; }
+      .navlinks a { font-size: 12px; }
+      .logo { font-size: 15px; }
+
+      .stats { grid-template-columns: minmax(0, 1fr); }
+
+      .stats .card {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: center;
+        column-gap: 12px;
+      }
+
+      .stats .cardTitle { margin: 0; font-size: 12px; }
+      .stats .small { grid-column: 1 / -1; margin-top: 2px; }
+      .quoteBox { align-items: flex-start; }
+      #quote { font-size: 13px; }
+      .prompt .host { display: none; }
+    }
+
+    @media (max-width: 350px) {
+      .toy-card { padding: 16px; }
+      .input-action { flex-wrap: wrap; }
+      .input-action .btn { width: 100%; }
+      .receipt { padding: 18px 17px 22px; }
+      .navlinks { max-width: 145px; }
+      .section-heading .sectionTitle { font-size: 16px; }
+      .signal-shell { padding: 0 14px 15px; }
+      .signal-body { grid-template-columns: minmax(0,1fr); }
+      .orb-panel { display: none; }
+      .signal-badge { padding: 4px 6px; }
+      .signal-kicker { font-size: 8px; }
+    }
+
+    @media (max-width: 600px) {
+      .signal-body {
+        grid-template-columns: minmax(0,1fr);
+        gap: 8px;
+      }
+
+      .orb-panel {
+        display: flex;
+        padding-top: 0;
+        margin-top: 5px;
+      }
+
+      .orb-art {
+        width: min(100%,250px);
+        max-width: 100%;
+      }
+
+      .orb-greeting {
+        width: 75%;
+        padding: 12px 8px 10px;
+      }
+
+      .orb-greeting small {
+        font-size: 7px;
+        letter-spacing: .16em;
+      }
+
+      .orb-greeting strong {
+        font-size: 21px;
+        line-height: 1.4;
+        margin: 7px 0 4px;
+      }
+
+      .orb-message {
+        font-size: 9px;
+        max-width: none;
+        line-height: 1.9;
+      }
+
+      .orb-signature {
+        font-size: 7px;
+        gap: 7px;
+        margin-top: 8px;
+        padding-top: 7px;
+      }
+
+      .orb-waves { height: 9px; gap: 2px; }
+      .orb-waves i { width: 2px; }
+      .orb-note { font-size: 9px; max-width: none; margin-top: 0; }
+    }
+
+    @media (pointer: coarse) {
+      #cursorGlow { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+        animation: none !important;
+      }
+
+      #cursorGlow { display: none; }
+
+      .btn:hover,
+      .avatarWrap,
+      .avatarWrap:hover,
+      .avatar:hover,
+      .project:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">跳到正文</a>
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div id="cursorGlow" aria-hidden="true"></div>
+
+  <div class="container">
+    <nav aria-label="主导航">
+      <a class="logo" href="#main" aria-label="NekonyaS 首页">
+        <span>&lt;</span>NekonyaS<span>/&gt;</span>
+      </a>
+
+      <div class="navlinks">
+        <a href="https://github.com/NekonyaS" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a href="#visitorStation" lang="en" aria-label="访客信号">Signal</a>
+        <a href="#terminal" lang="en" aria-label="废话终端">Terminal</a>
+        <a href="#playground" lang="en" aria-label="随便玩玩">Playground</a>
+      </div>
+    </nav>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="heroTitle">
+        <div>
+          <div class="eyebrow">
+            <span class="dot" aria-hidden="true"></span>
+            一个已经打开的网站
+          </div>
+
+          <h1 id="heroTitle">
+            <small>你好，我是</small>
+            <span class="gradient">NekonyaS.</span>
+          </h1>
+
+          <div class="typing" id="typing" aria-hidden="true">&gt; 本站的主要功能，是让你访问本站。</div>
+
+          <p class="desc">
+            一个普通的个人小角落，想到什么就放点什么。<br>
+            你现在看到的这个网站，就是你现在正在看的网站。<br>
+            欢迎随便逛逛，毕竟来都来了。
+          </p>
+
+          <div class="buttons">
+            <a class="btn primary" href="https://github.com/NekonyaS" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            <button class="btn" id="randomButton" type="button">一个可以按的按钮</button>
+            <button class="btn" id="catButton" type="button" lang="en" aria-label="叫 Neko 来坐坐">🐈 Call Neko</button>
+          </div>
+        </div>
+
+        <div class="avatarBox">
+          <div class="avatarWrap">
+            <div class="avatarFallback" id="avatarFallback" aria-hidden="true">N</div>
+            <img
+              class="avatar"
+              id="avatar"
+              src="https://github.com/NekonyaS.png?size=640"
+              width="340"
+              height="340"
+              alt="NekonyaS 的 GitHub 头像"
+              decoding="async"
+              referrerpolicy="no-referrer"
+            >
+            <span class="avatarStatus" aria-hidden="true"></span>
+          </div>
+          <div class="avatarCaption">头像在这里，主要是为了有个头像。</div>
+        </div>
+      </section>
+
+      <section class="stats" aria-label="一些看起来像信息的信息">
+        <div class="card">
+          <h2 class="cardTitle" lang="en">TIME · UTC+08:00</h2>
+          <div class="big" id="clock">--:--:--</div>
+          <p class="small">每一个此刻，都藏着新的可能。</p>
+        </div>
+
+        <div class="card">
+          <h2 class="cardTitle" lang="en">STATUS</h2>
+          <div class="big green">正在处于当前</div>
+          <p class="small">暂未发现自己不在当前。</p>
+        </div>
+
+        <div class="card">
+          <h2 class="cardTitle" lang="en">TIME HERE</h2>
+          <div class="big" id="elapsed">00:00:00</div>
+          <p class="small">从这次打开页面开始计时。</p>
+        </div>
+      </section>
+
+      <section class="quoteBox" aria-label="随机废话">
+        <div>
+          <p class="cardTitle" id="quoteLabel">一句话 · 主要由一句话组成</p>
+          <p id="quote" aria-live="polite">本站的主要功能，是让你访问本站。</p>
+        </div>
+        <button class="btn" id="anotherQuote" type="button">再说一句 ↻</button>
+      </section>
+
+      <section class="visitor-station" id="visitorStation" aria-labelledby="visitorTitle">
+        <div class="section-heading">
+          <div>
+            <h2 class="sectionTitle" id="visitorTitle" lang="en"><span>./</span>SIGNAL STATION</h2>
+            <p class="section-subtitle">你来都来了，网络也跟着来了。</p>
+          </div>
+
+          <span class="signal-badge" id="signalBadge" data-state="loading">
+            <i aria-hidden="true"></i>
+            <span id="signalBadgeText" role="status">等待信号</span>
+          </span>
+        </div>
+
+        <div class="signal-shell">
+          <div class="signal-topbar">
+            <span class="signal-kicker">INCOMING SIGNAL / THIS PAGE</span>
+            <div class="signal-tools">
+              <button type="button" class="signal-textbtn" id="refreshVisitor">↻ Refresh</button>
+            </div>
+          </div>
+
+          <div class="signal-body">
+            <div class="signal-main">
+              <p class="origin-intro">你的网络，大概来自</p>
+              <h3 id="originCountry">等信号说句话</h3>
+              <p id="originDetail">正在查询 IP 的大致归属地…</p>
+
+              <div class="ip-block">
+                <div class="ip-heading">
+                  <span class="signal-label">PUBLIC IP</span>
+                  <span id="ipVersion" hidden></span>
+                </div>
+                <div class="ip-line">
+                  <span id="publicIP">查询中…</span>
+                  <button class="signal-textbtn" id="copyIP" type="button" disabled>Copy IP</button>
+                </div>
+              </div>
+
+              <div class="network-owner">
+                <div>
+                  <span class="signal-label" lang="en">NETWORK</span>
+                  <p id="visitorISP">等待查询</p>
+                </div>
+                <div>
+                  <span class="signal-label" lang="en">ASN</span>
+                  <p id="visitorASN">—</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="orb-panel">
+              <div class="orb-art">
+                <canvas id="visitorOrb" aria-hidden="true"></canvas>
+
+                <div class="orb-greeting">
+                  <small lang="en">TAKE YOUR TIME</small>
+                  <strong>来都来了</strong>
+                  <p class="orb-message">随便看看，也可以什么都不做。</p>
+
+                  <div class="orb-signature">
+                    <span class="orb-waves" aria-hidden="true">
+                      <i style="--bar:4px;--delay:-.2s"></i>
+                      <i style="--bar:7px;--delay:-.7s"></i>
+                      <i style="--bar:10px;--delay:-1.3s"></i>
+                      <i style="--bar:6px;--delay:-.4s"></i>
+                      <i style="--bar:9px;--delay:-1s"></i>
+                    </span>
+                    <span lang="en">NEKO IS HERE</span>
+                  </div>
+                </div>
+              </div>
+              <div class="orb-note">轨道球只负责转，不负责定位。</div>
+            </div>
+          </div>
+
+          <div class="signal-metrics" aria-label="当前浏览器提供的信息">
+            <div class="signal-metric">
+              <span class="signal-label">01 / BROWSER &amp; OS</span>
+              <strong class="signal-value" id="visitorBrowser">读取中</strong>
+              <span class="signal-sub" id="visitorOS">以浏览器报告为准</span>
+            </div>
+
+            <div class="signal-metric">
+              <span class="signal-label">02 / SITE TIME</span>
+              <strong class="signal-value" id="visitorClock">--:--:--</strong>
+              <span class="signal-sub" id="visitorZone">UTC+08:00 · SITE TIME</span>
+            </div>
+
+            <div class="signal-metric">
+              <span class="signal-label">03 / PAGE READY</span>
+              <strong class="signal-value" id="visitorDOM">读取中</strong>
+              <span class="signal-sub" id="visitorProtocol">DOM 就绪耗时 · 不是网速</span>
+            </div>
+          </div>
+
+          <div class="signal-bottom">
+            <div class="signal-log">
+              <div class="signal-log-title">EVENT STREAM · UTC+08:00</div>
+              <div id="signalLog" tabindex="0" aria-label="当前页面的查询事件，不是访客记录库"></div>
+            </div>
+
+            <div class="signal-readout">
+              <span id="queryState">等待查询服务回复</span>
+              <span id="queryDuration">请求耗时：—</span>
+              <span id="visitorOnline">浏览器连接状态：读取中</span>
+            </div>
+          </div>
+
+          <div class="signal-disclosure">
+            <p>IP 查询会连接第三方服务，显示对方看到的网络出口。归属地仅供参考，使用代理时可能是代理出口，不代表你本人所在的位置。</p>
+
+            <details>
+              <summary>这些信息是怎么来的？</summary>
+
+              <p>
+                页面打开时，浏览器会向
+                <a href="https://ipwhois.io/documentation" target="_blank" rel="noopener noreferrer">IPWHOIS.io</a>
+                查询网络出口；失败时尝试
+                <a href="https://ip.sb/api/" target="_blank" rel="noopener noreferrer">IP.SB</a>，
+                最后由
+                <a href="https://www.ipify.org/" target="_blank" rel="noopener noreferrer">ipify</a>
+                尝试仅获取 IP。被请求的第三方会接收到此次连接的 IP 及通常的请求信息。接口限流或无法访问时会显示未获取，不猜测数据。
+              </p>
+
+              <p>浏览器、系统与页面运行状态在本地读取，页面时钟统一使用 UTC+08:00，不调用 GPS 定位，不读取内网 IP、不生成设备指纹标识，也不把小票、意见或涂鸦发出去。本页不建立访客数据库，不将查询结果存入 Cookie 或浏览器持久存储；网站托管方及第三方仍可能保留常规访问日志。</p>
+
+              <p>浏览器与系统识别可能受隐私保护影响。DOM 就绪耗时不含之后的异步查询；接口请求耗时也不是 Ping、测速或游戏延迟。轨道球仅为装饰，不代表真实网络路径。</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="terminal" id="terminal" aria-labelledby="terminalTitle">
+        <div class="terminalHeader">
+          <div class="lights" aria-hidden="true">
+            <span class="circle red"></span>
+            <span class="circle yellow"></span>
+            <span class="circle greenCircle"></span>
+          </div>
+          <h2 class="terminalTitle" id="terminalTitle">visitor@nekonyas : ~ / TERMINAL</h2>
+          <span class="terminalHint">文字小游戏 / 访客信息</span>
+        </div>
+
+        <div
+          id="terminalOutput"
+          role="log"
+          aria-label="终端输出"
+          aria-live="polite"
+          aria-relevant="additions"
+          tabindex="0"
+        ></div>
+
+        <form class="commandLine" id="terminalForm" autocomplete="off">
+          <label class="prompt" for="command">访客<span class="host">@这里</span> ~$</label>
+          <input
+            id="command"
+            name="command"
+            type="text"
+            placeholder="输入 help 试试"
+            aria-label="输入文字小游戏命令，例如 help"
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+            maxlength="400"
+          >
+          <button class="send" type="submit">发送 ↵</button>
+        </form>
+      </section>
+
+      <section class="playground" id="playground" aria-labelledby="playTitle">
+        <div class="section-heading">
+          <div>
+            <h2 class="sectionTitle" id="playTitle" lang="en"><span>./</span>PLAYGROUND</h2>
+            <p class="section-subtitle">没有必须完成的任务。随便点点，或者什么都不点。</p>
+          </div>
+        </div>
+
+        <div class="toy-grid">
+          <article class="card toy-card receipt-card" id="receiptToy" aria-labelledby="receiptTitle">
+            <div class="toy-head">
+              <h3 id="receiptTitle">🧾 废话小票机</h3>
+              <span class="toy-number">01 / PAPER</span>
+            </div>
+
+            <p class="toy-intro">给一个主题，开一张小票。没有消费，也没有什么信息增量。</p>
+
+            <form id="receiptForm" autocomplete="off">
+              <label for="receiptTopic" class="toy-label">今天想听哪方面的废话？</label>
+              <div class="input-action">
+                <input
+                  class="toy-input"
+                  id="receiptTopic"
+                  placeholder="比如：摸鱼、周末、吃饭"
+                  maxlength="24"
+                  value="摸鱼"
+                >
+                <button class="btn primary" type="submit">出一张小票</button>
+              </div>
+            </form>
+
+            <div class="receipt" id="receiptPaper" role="region" aria-label="刚刚生成的废话小票" aria-live="polite">
+              <div class="receipt-head">
+                <strong>废 话 便 利 店</strong>
+                <small>NEKONYAS · 不卖东西，主要是开着</small>
+              </div>
+
+              <div class="receipt-meta">
+                <span id="receiptId">NO. 0001</span>
+                <span id="receiptDate" title="UTC+08:00">此时此刻</span>
+              </div>
+
+              <p class="receipt-topic">本次主题：<strong id="receiptSubject">摸鱼</strong></p>
+
+              <p class="receipt-body" id="receiptText">关于摸鱼，我的看法是：要从摸鱼本身出发，具体考虑一下跟摸鱼有关的事情。</p>
+
+              <div class="receipt-total">
+                <span>应付金额</span>
+                <strong>¥ 0.00</strong>
+              </div>
+
+              <p class="receipt-bottom">
+                收银员：Neko　／　找零：一句「喵」<br>
+                此为文字玩具，不是购物凭证。
+              </p>
+
+              <div class="receipt-bars" aria-hidden="true"></div>
+              <p class="receipt-bottom">条码仅作装饰。扫了也不归 Neko 管。</p>
+            </div>
+
+            <button class="receipt-save" id="saveReceipt" type="button">把这张废话存成文字 ↓</button>
+          </article>
+
+          <article class="card toy-card" id="opinionToy" aria-labelledby="opinionTitle">
+            <div class="toy-head">
+              <h3 id="opinionTitle" lang="en">📮 Neko Mailbox</h3>
+              <span class="toy-number">02 / NEKO</span>
+            </div>
+
+            <p class="toy-intro">负责接收一些意见，以及产生一些看起来像回复的回复。</p>
+
+            <div class="cat-desk">
+              <button type="button" class="desk-cat" id="deskCat" aria-label="轻轻叫一下值班的 Neko"> /\_/\
+( -.- )
+ &gt; ^ &lt;</button>
+
+              <div class="desk-copy">
+                <strong>值班状态：横着</strong>
+                在岗，但不一定在想事。<br>
+                点点左边的 Neko 也行。
+              </div>
+            </div>
+
+            <form id="opinionForm" autocomplete="off">
+              <label for="opinionText" class="toy-label">请简要说说你的简要意见</label>
+              <textarea
+                class="toy-textarea"
+                id="opinionText"
+                rows="3"
+                maxlength="180"
+                placeholder="比如：建议本站少说一点废话。"
+                required
+              ></textarea>
+
+              <div class="toy-actions">
+                <button class="btn primary" type="submit">交给 Neko</button>
+                <button class="btn" id="clearOpinion" type="button">当作没说</button>
+              </div>
+            </form>
+
+            <div class="cat-reply">
+              <span class="toy-label">Neko 的模板回复</span>
+              <p id="catReply" role="status">还没有意见。
+Neko 对此暂时也没有意见。</p>
+              <p id="quotedOpinion" hidden></p>
+            </div>
+
+            <small class="local-note">仅在当前页面生成回复，不上传、不保存，也不会发送给站长。不是在线留言板。</small>
+          </article>
+
+          <article class="card toy-card" id="doodleToy" aria-labelledby="doodleTitle">
+            <div class="toy-head">
+              <h3 id="doodleTitle">✎ 随手画两笔</h3>
+              <span class="toy-number">03 / DOODLE</span>
+            </div>
+
+            <p class="toy-intro">不会画也没关系。线条有时候自己也不知道要去哪里。</p>
+
+            <div class="drawing-tools">
+              <div class="swatches" role="group" aria-label="选择画笔颜色">
+                <button type="button" class="swatch" style="--ink:#343444" data-ink="#343444" aria-label="墨灰色" aria-pressed="true"></button>
+                <button type="button" class="swatch" style="--ink:#8563b6" data-ink="#8563b6" aria-label="紫色" aria-pressed="false"></button>
+                <button type="button" class="swatch" style="--ink:#397f90" data-ink="#397f90" aria-label="青色" aria-pressed="false"></button>
+                <button type="button" class="swatch" style="--ink:#c27380" data-ink="#c27380" aria-label="粉色" aria-pressed="false"></button>
+                <button type="button" class="swatch" style="--ink:#b48736" data-ink="#b48736" aria-label="金棕色" aria-pressed="false"></button>
+              </div>
+
+              <label class="brush-size" for="brushSize">
+                粗细
+                <input id="brushSize" type="range" min="2" max="12" value="4" step="1">
+              </label>
+            </div>
+
+            <div class="drawing-wrap">
+              <canvas id="doodle" tabindex="0" aria-label="涂鸦画布。鼠标或手指拖动画画；键盘用户可使用下方的请 Neko 代画按钮。">当前浏览器无法显示画布。</canvas>
+              <div class="drawing-hint" id="drawingHint">
+                <strong>～</strong>
+                这里本来没有线
+                <small>画上以后就有了。</small>
+              </div>
+            </div>
+
+            <div class="toy-actions">
+              <button class="btn" id="catDraw" type="button">请 Neko 代画</button>
+              <button class="btn" id="undoDraw" type="button" disabled>撤销</button>
+              <button class="btn" id="clearDraw" type="button" disabled>清空</button>
+              <button class="btn primary" id="saveDraw" type="button">保存 PNG ↓</button>
+            </div>
+
+            <small class="local-note">只画在当前页面，不上传。刷新会清空；想留下就先保存。</small>
+          </article>
+
+          <article class="card toy-card" id="loaderToy" aria-labelledby="loaderTitle">
+            <div class="toy-head">
+              <h3 id="loaderTitle">⏳ 没有任务的进度条</h3>
+              <span class="toy-number">04 / LOADING</span>
+            </div>
+
+            <p class="toy-intro">不下载东西，也不处理文件。只负责把一个进度条走完。</p>
+            <label class="toy-label" for="loadTask">本次准备假装在做什么？</label>
+
+            <select class="toy-select" id="loadTask">
+              <option value="prepare">开始准备开始</option>
+              <option value="progress">给进度条加点进度</option>
+              <option value="nothing">认真处理一下没什么事</option>
+            </select>
+
+            <div class="loader-stage">
+              <div class="loader-value">
+                <span id="loadNumber">0</span>
+                <span>%</span>
+              </div>
+
+              <div
+                class="track"
+                id="loadTrack"
+                role="progressbar"
+                aria-label="文字玩具模拟进度"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+              >
+                <div id="loadFill"></div>
+              </div>
+
+              <p id="loadStatus" role="status">目前还没开始，所以暂时处于还没开始的阶段。</p>
+            </div>
+
+            <div class="toy-actions">
+              <button class="btn primary" id="startLoad" type="button">开始一下</button>
+              <button class="btn" id="pauseLoad" type="button" disabled>暂停</button>
+              <button class="btn" id="resetLoad" type="button">归零</button>
+            </div>
+
+            <small class="local-note">大约六秒结束，也可以随时暂停或归零。没有任何真实后台任务。</small>
+          </article>
+
+          <article class="card toy-card scene-card" aria-labelledby="sceneTitle">
+            <div class="toy-head">
+              <h3 id="sceneTitle"><svg class="heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="4" y="3" width="16" height="17" rx="1.5"></rect><path d="M12 3v17M4 11.5h16M2.5 21h19"></path><path class="icon-shine" d="m7 6 2 2m6 6 2 2"></path></svg>窗边发会儿呆</h3>
+              <span class="toy-number">05 / WINDOW</span>
+            </div>
+
+            <p class="toy-intro">不朝向任何真实地点。这里的天气，由按钮决定。</p>
+
+            <div class="scene" id="scene" data-sky="night" role="group" aria-label="虚构的夜晚窗景，有月亮、云、山丘和窗台上的 Neko">
+              <span class="scene-caption" aria-hidden="true">SOMEWHERE / 只是画面</span>
+              <div class="scene-light" aria-hidden="true"></div>
+              <div class="scene-cloud" aria-hidden="true"></div>
+              <div class="scene-cloud second" aria-hidden="true"></div>
+              <div class="scene-hill back" aria-hidden="true"></div>
+              <div class="scene-hill" aria-hidden="true"></div>
+              <div class="scene-sill" aria-hidden="true"></div>
+
+              <button class="scene-cat" id="windowCat" type="button" aria-label="问问窗台上的 Neko 在看什么"> /\_/\
+(  -  )</button>
+            </div>
+
+            <div class="scene-options" role="group" aria-label="选择虚构窗景">
+              <button class="btn" type="button" data-sky="day" aria-pressed="false">白天</button>
+              <button class="btn" type="button" data-sky="dawn" aria-pressed="false">傍晚</button>
+              <button class="btn" type="button" data-sky="night" aria-pressed="true">夜里</button>
+            </div>
+
+            <p class="local-note" id="sceneNote" role="status">夜里了。Neko 没有说明它几点睡。</p>
+          </article>
+
+          <article class="card toy-card" aria-labelledby="archiveTitle">
+            <div class="toy-head">
+              <h3 id="archiveTitle">🗂 无事发生档案馆</h3>
+              <span class="toy-number">06 / ARCHIVE</span>
+            </div>
+
+            <p class="toy-intro">郑重保存那些没有什么需要郑重保存的记录。</p>
+
+            <div class="archives">
+              <details>
+                <summary>关于「这里有什么」的说明</summary>
+                <p>这里有你目前看到的这些东西。至于你没看到的东西，你可以往下看看，或者保持没看到。</p>
+              </details>
+
+              <details>
+                <summary>一项尚未开展的开展计划</summary>
+                <p>
+                  第一阶段：先放在这里。<br>
+                  第二阶段：想起它的时候再说。<br>
+                  目前没有第三阶段，已经足够忙了。
+                </p>
+              </details>
+
+              <details>
+                <summary>Neko 办公室会议纪要</summary>
+                <p>
+                  出席：Neko。<br>
+                  缺席：会议内容。<br>
+                  会议决定：散会。<br>
+                  备注：出席者在全程睡觉。
+                </p>
+              </details>
+
+              <details>
+                <summary>关于这份记录为什么在这里</summary>
+                <p>这份记录原本不在这里。放进这个抽屉以后，就变成了这里的一份记录。保存原因：已经放进来了。</p>
+              </details>
+
+              <details>
+                <summary>一个写着「没有彩蛋」的抽屉</summary>
+                <p>
+                  抽屉里有一张纸。<br>
+                  纸上写着：试试在终端输入 <code>nothing</code>。<br>
+                  至于会发生什么，大概跟这个词有关。
+                </p>
+              </details>
+            </div>
+          </article>
+        </div>
+
+        <p class="privacy-line">这些小玩具只在浏览器里运行，不发送你填写的文字或涂鸦。头像从 GitHub 加载；网络出口查询使用上方说明的第三方服务。</p>
+      </section>
+
+      <section class="contentSection" aria-labelledby="contentTitle">
+        <h2 class="sectionTitle" id="contentTitle"><span>./</span>一些尚可称为内容的内容</h2>
+
+        <div class="projects">
+          <article class="card project">
+            <h3>📦 关于本站</h3>
+            <p>这是一个个人网站。之所以称为个人网站，主要是因为它既是个人的，也是网站。</p>
+            <div class="tags">
+              <span class="tag">个人</span>
+              <span class="tag">网站</span>
+              <span class="tag">确实如此</span>
+            </div>
+          </article>
+
+          <article class="card project">
+            <h3>🗓️ 近期计划</h3>
+            <p>先想一想要做什么。想好之后，再考虑要不要做。目前进行到了第一步之前。</p>
+            <div class="tags">
+              <span class="tag">准备准备</span>
+              <span class="tag">再说再说</span>
+              <span class="tag">尚未开始</span>
+            </div>
+          </article>
+
+          <article class="card project">
+            <h3><svg class="heading-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 9h18M6.5 6.5h.01M9.5 6.5h.01"></path><path class="icon-shine" d="M7 13h10M7 16h6"></path></svg>运行原理</h3>
+            <p>网页打开以后，你就能看到网页。关闭以后，通常就看不到了。整个过程十分完整。</p>
+            <div class="tags">
+              <span class="tag">打开</span>
+              <span class="tag">看看</span>
+              <span class="tag">关闭</span>
+            </div>
+          </article>
+
+          <article class="card project">
+            <h3>🐈 Neko Office</h3>
+            <p>负责在需要 Neko 的时候，让 Neko 出现一下。其他事务暂不受理，因为负责人就是 Neko。</p>
+            <div class="tags">
+              <span class="tag">喵</span>
+              <span class="tag">稍等</span>
+              <span class="tag">在睡</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <noscript>
+        <p>你的浏览器没有启用 JavaScript。文字还在，只是按钮、时钟和终端决定先歇一会儿。</p>
+      </noscript>
+    </main>
+
+    <footer>
+      <p>© <span id="year">2026</span> NekonyaS · 本站已在本站上线。</p>
+      <p>你已经到达页面底部，再往下就主要是屏幕了。</p>
+      <div class="bottom-links">
+        <a href="#main">回上面看看 ↑</a>
+        <button id="bottomExtra" type="button">还能再往下吗？</button>
+      </div>
+      <button class="secret" id="secretButton" type="button">这里没有彩蛋，至少这句话是这么说的。</button>
+    </footer>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+
+      const $ = id => document.getElementById(id);
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const motionReduced = () => reducedMotion.matches;
+      const finePointer = window.matchMedia('(pointer: fine)');
+      const githubURL = 'https://github.com/NekonyaS';
+      const startedAt = performance.now();
+
+      const avatar = $('avatar');
+      const avatarFallback = $('avatarFallback');
+
+      function showAvatar() {
+        avatar.hidden = false;
+        avatarFallback.hidden = true;
+        avatar.parentElement.removeAttribute('role');
+        avatar.parentElement.removeAttribute('aria-label');
+      }
+
+      function hideBrokenAvatar() {
+        avatar.hidden = true;
+        avatarFallback.hidden = false;
+        avatar.parentElement.setAttribute('role', 'img');
+        avatar.parentElement.setAttribute('aria-label', 'NekonyaS 的字母头像');
+      }
+
+      avatar.addEventListener('load', showAvatar);
+      avatar.addEventListener('error', hideBrokenAvatar);
+
+      if (avatar.complete) {
+        if (avatar.naturalWidth > 0) showAvatar();
+        else hideBrokenAvatar();
+      }
+
+      const SITE_TIME_ZONE = 'Asia/Taipei';
+      const SITE_TIME_LABEL = 'UTC+08:00';
+
+      const clockFormat = new Intl.DateTimeFormat('en-GB', {
+        timeZone: SITE_TIME_ZONE,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hourCycle: 'h23'
+      });
+
+      const yearFormat = new Intl.DateTimeFormat('en', {
+        timeZone: SITE_TIME_ZONE,
+        year: 'numeric'
+      });
+
+      const pad = n => String(n).padStart(2, '0');
+
+      function formatElapsed() {
+        const seconds = Math.max(0, Math.floor((performance.now() - startedAt) / 1000));
+        return `${pad(Math.floor(seconds / 3600))}:${pad(Math.floor(seconds / 60) % 60)}:${pad(seconds % 60)}`;
+      }
+
+      function updateClock() {
+        const now = new Date();
+        $('clock').textContent = clockFormat.format(now);
+        $('elapsed').textContent = formatElapsed();
+        $('year').textContent = yearFormat.format(now);
+      }
+
+      updateClock();
+
+      setInterval(() => {
+        if (!document.hidden) updateClock();
+      }, 1000);
+
+      const typingTexts = [
+        '本站的主要功能，是让你访问本站。',
+        '至于其他功能，主要是一些其他功能。',
+        '你每看完一句话，就少一句没看完的话。',
+        '正在进行一项尚未开始的准备工作。',
+        '有什么事情，等有事情的时候再说。',
+        '先这样，至于那样，之后再说。',
+        '这个网站没有别的意思，主要是这个意思。'
+      ];
+
+      let typingTimer = 0;
+      let textIndex = 0;
+      let charIndex = typingTexts[0].length;
+      let deleting = true;
+
+      function typeStep() {
+        const chars = Array.from(typingTexts[textIndex]);
+
+        charIndex += deleting ? -1 : 1;
+        charIndex = Math.max(0, Math.min(chars.length, charIndex));
+
+        $('typing').textContent = '> ' + chars.slice(0, charIndex).join('');
+
+        let delay = deleting ? 38 : 95;
+
+        if (!deleting && charIndex === chars.length) {
+          deleting = true;
+          delay = 2300;
+        } else if (deleting && charIndex === 0) {
+          deleting = false;
+          textIndex = (textIndex + 1) % typingTexts.length;
+          delay = 330;
+        }
+
+        typingTimer = window.setTimeout(typeStep, delay);
+      }
+
+      function resumeTyping() {
+        clearTimeout(typingTimer);
+
+        if (motionReduced()) {
+          $('typing').textContent = '> ' + typingTexts[0];
+        } else if (!document.hidden) {
+          typingTimer = window.setTimeout(typeStep, 1500);
+        }
+      }
+
+      resumeTyping();
+
+      const canvas = $('stars');
+      const ctx = canvas.getContext('2d');
+
+      let stars = [];
+      let width = 0;
+      let height = 0;
+      let frameId = 0;
+      let lastTime = 0;
+
+      function resizeStars() {
+        if (!ctx) return;
+
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        const count = Math.min(105, Math.max(30, Math.floor(width * height / 12500)));
+
+        stars = Array.from({ length: count }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: .45 + Math.random() * 1.05,
+          speed: 2 + Math.random() * 6,
+          opacity: .18 + Math.random() * .36,
+          phase: Math.random() * Math.PI * 2
+        }));
+
+        drawStars(performance.now(), false);
+      }
+
+      function drawStars(now, animated) {
+        if (!ctx) return;
+
+        const dt = lastTime ? Math.min((now - lastTime) / 1000, .05) : 0;
+        lastTime = now;
+
+        ctx.clearRect(0, 0, width, height);
+
+        for (const star of stars) {
+          if (animated) {
+            star.y += star.speed * dt;
+
+            if (star.y > height + 2) {
+              star.y = -2;
+              star.x = Math.random() * width;
+            }
+          }
+
+          const twinkle = animated
+            ? .78 + .22 * Math.sin(now / 1800 + star.phase)
+            : .85;
+
+          ctx.fillStyle = `rgba(206,216,255,${star.opacity * twinkle})`;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function starLoop(now) {
+        drawStars(now, true);
+        frameId = requestAnimationFrame(starLoop);
+      }
+
+      function resumeStars() {
+        cancelAnimationFrame(frameId);
+        lastTime = 0;
+
+        if (!ctx || document.hidden) return;
+
+        if (motionReduced()) {
+          drawStars(performance.now(), false);
+        } else {
+          frameId = requestAnimationFrame(starLoop);
+        }
+      }
+
+      resizeStars();
+      resumeStars();
+
+      window.addEventListener('resize', resizeStars);
+
+      document.addEventListener('visibilitychange', () => {
+        updateClock();
+        resumeTyping();
+        resumeStars();
+      });
+
+      reducedMotion.addEventListener('change', () => {
+        resumeTyping();
+        resumeStars();
+      });
+
+      document.addEventListener('pointermove', event => {
+        if (!finePointer.matches || motionReduced()) return;
+
+        const glow = $('cursorGlow');
+        glow.style.left = event.clientX + 'px';
+        glow.style.top = event.clientY + 'px';
+        glow.style.opacity = '1';
+      }, { passive: true });
+
+      const sayings = [
+        '本站的主要功能，是让你访问本站。',
+        '至于其他功能，主要是一些其他功能。',
+        '你刚才按了一下，所以这个按钮刚才被按了一下。',
+        '这句话虽然没有什么内容，但它至少是一句话。',
+        '事情的发展，正在朝着事情发展的方向发展。',
+        '经过认真思考，我决定继续思考。',
+        '先把这件事放一放，它就会成为一件被放一放的事。',
+        '只要再等一分钟，就又等了一分钟。',
+        '目前暂时没有新消息，这就是目前的新消息。',
+        '看得出来，你已经看到这里了。',
+        '这个问题的问题，在于它是一个问题。',
+        '与其在这里，不如继续在这里。',
+        '有些话不说出来，就只是一些没说出来的话。',
+        '这个按钮没有别的意思，主要就是这个意思。',
+        '计划已经有了：先制定一个计划。',
+        '关于以后怎么办，以后会有以后的办法，或者以后的问题。',
+        '来都来了，那说明确实是来了。',
+        '今天适合做一些今天做的事情。',
+        '这是一条随机消息。具体为什么是这条，主要是因为随机到了这条。',
+        '你可以选择不按这个按钮，这也是一种没有按的选择。',
+        '目前的进展，是已经知道目前还没有进展。',
+        '页面往下还有内容，除非你已经到了最下面。',
+        '能看到这句话，说明这句话目前是能被你看到的。',
+        '刚才那句话说完以后，接下来就是这句话。',
+        '正在等待等待结束。',
+        '这一页没有什么必须带走的东西，除了你在这里度过的这点时间。'
+      ];
+
+      let lastSaying = 0;
+      let sayingCount = 0;
+
+      function nextSaying() {
+        const index = (
+          lastSaying + 1 + Math.floor(Math.random() * (sayings.length - 1))
+        ) % sayings.length;
+
+        lastSaying = index;
+        return sayings[index];
+      }
+
+      let toastTimer = 0;
+
+      function toast(text) {
+        clearTimeout(toastTimer);
+        $('toast').textContent = text;
+        $('toast').classList.add('show');
+
+        toastTimer = window.setTimeout(() => {
+          $('toast').classList.remove('show');
+        }, 3300);
+      }
+
+      function saySomething() {
+        const text = nextSaying();
+        sayingCount += 1;
+
+        $('quote').textContent = text;
+        $('quoteLabel').textContent = `已换 ${sayingCount} 次 · 每换一次，就又换了一次`;
+
+        toast('已成功说了一句。具体说了什么，请看那一句。');
+      }
+
+      $('randomButton').addEventListener('click', saySomething);
+      $('anotherQuote').addEventListener('click', saySomething);
+
+      let catsCalled = 0;
+      let catPartyRunning = false;
+
+      function spawnCat() {
+        const liveCats = document.querySelectorAll('.floating-cat');
+        if (liveCats.length >= 18) liveCats[0].remove();
+
+        const cat = document.createElement('div');
+        cat.className = 'floating-cat';
+        cat.textContent = '🐈';
+        cat.setAttribute('aria-hidden', 'true');
+
+        cat.style.left = (
+          12 + Math.random() * Math.max(0, window.innerWidth - 70)
+        ) + 'px';
+
+        cat.style.top = (
+          85 + Math.random() * Math.max(0, window.innerHeight - 180)
+        ) + 'px';
+
+        document.body.appendChild(cat);
+
+        if (!motionReduced()) {
+          window.setTimeout(() => cat.classList.add('leaving'), 180);
+        }
+
+        window.setTimeout(() => cat.remove(), 1650);
+      }
+
+      function callCat() {
+        catsCalled += 1;
+        spawnCat();
+        toast(`Neko 来过了。本页已叫 ${catsCalled} 次，实际考勤由 Neko 自行解释。`);
+      }
+
+      function catParty() {
+        if (catPartyRunning) return;
+
+        catPartyRunning = true;
+        toast('你发现了没有被成功藏起来的彩蛋。🐈');
+
+        const count = motionReduced() ? 3 : 14;
+
+        for (let i = 0; i < count; i++) {
+          window.setTimeout(spawnCat, i * 120);
+        }
+
+        window.setTimeout(() => {
+          catPartyRunning = false;
+        }, 3200);
+      }
+
+      $('catButton').addEventListener('click', callCat);
+      $('secretButton').addEventListener('click', catParty);
+
+      const terminal = $('terminalOutput');
+      const input = $('command');
+      const history = [];
+
+      let historyIndex = 0;
+      let composing = false;
+
+      function print(text, kind = '') {
+        const line = document.createElement('div');
+        line.className = 'terminal-line' + (kind ? ' ' + kind : '');
+        line.textContent = text;
+        terminal.appendChild(line);
+
+        while (terminal.children.length > 160) {
+          terminal.firstElementChild.remove();
+        }
+
+        terminal.scrollTop = terminal.scrollHeight;
+        return line;
+      }
+
+      function welcome() {
+        print(
+          '欢迎使用「说了等于没说」终端。\n' +
+          '这里有文字小游戏，也能输入 ip 查看网络出口；不会执行电脑命令。\n\n' +
+          '输入 help 看看能输入什么；输入 neko 叫它来坐坐。'
+        );
+      }
+
+      const actions = new Map([
+        ['help', () => print(
+          '可以输入的内容，主要是下面这些内容：\n\n' +
+          'help / 帮助        看看能输入什么\n' +
+          'about / 关于       了解一些关于这里的事\n' +
+          'status / 状态      查询目前是否处于目前\n' +
+          'fortune / 废话     领取一句刚刚领取的废话\n' +
+          'neko / cat         叫 Neko 来坐坐\n' +
+          'time / 时间        了解现在是现在的几点\n' +
+          'echo 文字          你说什么，它就说什么\n' +
+          'coffee / 咖啡      获得一杯文字咖啡\n' +
+          'whoami / 我是谁    一个范围有限的回答\n' +
+          'github             显示 GitHub 链接\n' +
+          'sudo               请示 Neko 管理员\n' +
+          'clear / 清屏       清除那些已被显示的内容\n\n' +
+          '↑ / ↓ 可以翻之前输入的内容。'
+        )],
+
+        ['about', () => print(
+          '你好，我是 NekonyaS。\n' +
+          '这里随便放点东西，没有特别宏大的计划。\n\n' +
+          '本站的主要功能，是让你访问本站。\n' +
+          '至于其他功能，主要是一些其他功能。'
+        )],
+
+        ['status', () => print(
+          '当前状态：正在处于当前。\n' +
+          '处理进度：已经开始考虑什么时候开始。\n' +
+          '预计完成：完成的时候。\n\n' +
+          '以上是文字玩笑，不是电脑或服务器监控。'
+        )],
+
+        ['fortune', () => print(nextSaying())],
+
+        ['cat', () => {
+          print(' /\\_/\\\n( o.o )\n > ^ <\n\nNeko 已到场。\n它没有给出任何意见，但看起来已经给过了。');
+          spawnCat();
+        }],
+
+        ['time', () => print(
+          `现在是 ${clockFormat.format(new Date())} ${SITE_TIME_LABEL}。\n` +
+          '每一个此刻，都藏着新的可能。'
+        )],
+
+        ['echo', args => print(
+          args || '你没有说什么，所以它也不知道该复读什么。'
+        )],
+
+        ['coffee', () => print(
+          '☕\n这是一杯文字咖啡。\n它包含“咖啡”两个字，但不包含咖啡。'
+        )],
+
+        ['whoami', () => print(
+          '你是正在输入 whoami 的人。\n' +
+          '你也可以输入 ip 或 device，看看本页展示的网络与浏览器信息。'
+        )],
+
+        ['github', () => {
+          const line = print('入口在这里。点开以后，会去它所指向的地方：\n');
+          const link = document.createElement('a');
+
+          link.href = githubURL;
+          link.textContent = githubURL;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+
+          line.appendChild(link);
+          terminal.scrollTop = terminal.scrollHeight;
+        }],
+
+        ['sudo', () => print(
+          '已向 Neko 管理员提交申请。\n' +
+          '管理员回复：喵。\n\n' +
+          '申请结果：请自行理解。\n' +
+          '（这只是文字小游戏，没有任何系统权限操作。）'
+        )],
+
+        ['skills', () => print(
+          '这里没有技能评分。\n' +
+          '只是一个随便放点东西的个人小站。\n\n' +
+          '不过这段文字的换行功能，确实已经在换行了。'
+        )],
+
+        ['exit', () => print(
+          '你已成功结束这条 exit 命令。\n至于网页，它还在。'
+        )],
+
+        ['clear', () => {
+          terminal.replaceChildren();
+        }]
+      ]);
+
+      const aliases = new Map([
+        ['帮助', 'help'],
+        ['关于', 'about'],
+        ['状态', 'status'],
+        ['废话', 'fortune'],
+        ['neko', 'cat'],
+        ['猫', 'cat'],
+        ['喵', 'cat'],
+        ['时间', 'time'],
+        ['复读', 'echo'],
+        ['咖啡', 'coffee'],
+        ['我是谁', 'whoami'],
+        ['清屏', 'clear'],
+        ['退出', 'exit']
+      ]);
+
+      function runCommand(raw) {
+        const text = raw.trim();
+        if (!text) return;
+
+        print('访客@这里 ~$ ' + text, 'user');
+
+        const match = text.match(/^(\S+)(?:\s+([\s\S]*))?$/u);
+        if (!match) return;
+
+        const name = match[1].toLowerCase();
+        const command = aliases.get(name) || name;
+        const action = actions.get(command);
+
+        if (action) {
+          action(match[2] || '');
+        } else {
+          print(
+            `“${match[1]}”也是一种输入。\n` +
+            '只是这里还没有准备好对应的回复。输入 help 看看？',
+            'error'
+          );
+        }
+
+        terminal.scrollTop = terminal.scrollHeight;
+      }
+
+      input.addEventListener('compositionstart', () => {
+        composing = true;
+      });
+
+      input.addEventListener('compositionend', () => {
+        composing = false;
+      });
+
+      input.addEventListener('keydown', event => {
+        if (event.isComposing || composing || event.keyCode === 229) return;
+
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+          event.preventDefault();
+
+          if (event.key === 'ArrowUp') {
+            historyIndex = Math.max(0, historyIndex - 1);
+          } else {
+            historyIndex = Math.min(history.length, historyIndex + 1);
+          }
+
+          input.value = history[historyIndex] || '';
+          input.setSelectionRange(input.value.length, input.value.length);
+        }
+      });
+
+      $('terminalForm').addEventListener('submit', event => {
+        event.preventDefault();
+        if (composing) return;
+
+        const value = input.value.trim();
+        if (!value) return;
+
+        if (history[history.length - 1] !== value) history.push(value);
+        if (history.length > 40) history.shift();
+
+        historyIndex = history.length;
+        input.value = '';
+        input.focus({ preventScroll: true });
+        runCommand(value);
+      });
+
+      const on = (id, event, action) => $(id).addEventListener(event, action);
+
+      const shortText = (value, max) => Array.from(
+        value.replace(/\s+/gu, ' ').trim()
+      ).slice(0, max).join('');
+
+      const randomItem = list => list[Math.floor(Math.random() * list.length)];
+
+      function saveLocalBlob(blob, filename) {
+        if (!blob) {
+          toast('没能生成文件。当前页面里的内容还在。');
+          return;
+        }
+
+        try {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+
+          link.href = url;
+          link.download = filename;
+          link.style.display = 'none';
+
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+
+          window.setTimeout(() => URL.revokeObjectURL(url), 2000);
+          toast('文件已准备好，请查看浏览器的保存提示。');
+        } catch (_error) {
+          toast('这个浏览器暂时没能保存文件。你仍然可以截图或复制文字。');
+        }
+      }
+
+      const ticketDateFormat = new Intl.DateTimeFormat('zh-CN', {
+        timeZone: SITE_TIME_ZONE,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+
+      let receiptNumber = 1;
+
+      const receiptTemplates = [
+        t => `关于${t}，我的看法是：要从${t}本身出发，具体考虑一下跟${t}有关的事情。`,
+        t => `一说到${t}，就不得不提一下${t}。毕竟不提的话，关于${t}的这一段就没有提到${t}。`,
+        t => `经过对${t}的初步了解，我们了解到：目前对${t}的了解，仍处于初步了解的阶段。`,
+        t => `针对${t}，可以先制定一个计划。计划的第一步，就是想一想应该制定什么计划。`,
+        t => `${t}这件事，说简单也不一定简单，说复杂也不一定复杂。具体如何，主要看它到底如何。`,
+        t => `这是一段关于${t}的文字。读完以后，你就成功读完了一段关于${t}的文字。`,
+        t => `在${t}之前，是${t}之前。在${t}之后，是${t}之后。至于现在，要看${t}进行到了哪里。`
+      ];
+
+      let lastTemplate = 0;
+      $('receiptDate').textContent = ticketDateFormat.format(new Date());
+
+      function makeReceipt() {
+        const topic = shortText($('receiptTopic').value, 24) || '什么都不想';
+
+        lastTemplate = (
+          lastTemplate + 1 + Math.floor(Math.random() * (receiptTemplates.length - 1))
+        ) % receiptTemplates.length;
+
+        receiptNumber += 1;
+
+        $('receiptSubject').textContent = topic;
+        $('receiptText').textContent = receiptTemplates[lastTemplate](topic);
+        $('receiptId').textContent = 'NO. ' + String(receiptNumber).padStart(4, '0');
+        $('receiptDate').textContent = ticketDateFormat.format(new Date());
+      }
+
+      on('receiptForm', 'submit', event => {
+        event.preventDefault();
+        makeReceipt();
+      });
+
+      on('saveReceipt', 'click', () => {
+        const text = [
+          '废话便利店 / NekonyaS',
+          '不卖东西，主要是开着',
+          '------------------------------',
+          `${$('receiptId').textContent}    ${$('receiptDate').textContent}（${SITE_TIME_LABEL}）`,
+          `本次主题：${$('receiptSubject').textContent}`,
+          '',
+          $('receiptText').textContent,
+          '',
+          '------------------------------',
+          '应付金额：¥ 0.00',
+          '收银员：Neko / 找零：一句「喵」',
+          '此为文字玩具，不是购物凭证。',
+          '编号只是这次页面内的小票序号，不是订单号。'
+        ].join('\n');
+
+        saveLocalBlob(
+          new Blob(['\uFEFF', text], { type: 'text/plain;charset=utf-8' }),
+          '一张废话小票.txt'
+        );
+      });
+
+      const catReplies = [
+        '你的意见已经从“没有写出来”变成了“已经写出来”。\n处理结果：Neko 伸了一个懒腰。\n签字：喵。',
+        'Neko 仔细看了一眼这段文字。\n随后决定换一边躺着。\n这是一条本地模板回复，并不代表问题已被解决。',
+        '收到这段文字以后，意见箱里就出现了这段文字。\nNeko 批注：纸箱还不错。',
+        '已进入“考虑要不要考虑”的阶段。\n预计答复时间：本条答复已经出现的这个时间。\n附言：喵。',
+        '本条意见包含了一些本条意见所包含的内容。\nNeko 表示：文字放这里，罐头放那边。'
+      ];
+
+      on('opinionForm', 'submit', event => {
+        event.preventDefault();
+
+        const value = shortText($('opinionText').value, 180);
+
+        if (!value) {
+          $('opinionText').focus();
+          toast('Neko 看了看空白。空白暂时没有发表意见。');
+          return;
+        }
+
+        $('catReply').textContent = randomItem(catReplies);
+        $('quotedOpinion').hidden = false;
+        $('quotedOpinion').textContent = '你刚刚写的是：「' + value + '」';
+      });
+
+      on('clearOpinion', 'click', () => {
+        $('opinionText').value = '';
+        $('quotedOpinion').textContent = '';
+        $('quotedOpinion').hidden = true;
+        $('catReply').textContent = '已经当作没说。\nNeko 继续保持没听见的姿势。';
+      });
+
+      on('deskCat', 'click', () => {
+        $('catReply').textContent = 'Neko 醒了。\n确认没有罐头以后，又躺下了。';
+        spawnCat();
+      });
+
+      const doodle = $('doodle');
+      const drawContext = doodle.getContext('2d');
+      const DRAW_W = 800;
+      const DRAW_H = 500;
+      const strokes = [];
+
+      let liveStroke = null;
+      let activePointer = null;
+      let ink = '#343444';
+      let drawScale = 1;
+
+      const MAX_STROKES = 360;
+      const MAX_POINTS = 6000;
+
+      function paintStroke(context, stroke) {
+        if (!stroke.points.length) return;
+
+        context.strokeStyle = stroke.color;
+        context.fillStyle = stroke.color;
+        context.lineWidth = stroke.size;
+        context.lineCap = 'round';
+        context.lineJoin = 'round';
+
+        if (stroke.points.length === 1) {
+          const p = stroke.points[0];
+          context.beginPath();
+          context.arc(p.x, p.y, stroke.size / 2, 0, Math.PI * 2);
+          context.fill();
+          return;
+        }
+
+        context.beginPath();
+        context.moveTo(stroke.points[0].x, stroke.points[0].y);
+
+        for (let i = 1; i < stroke.points.length; i++) {
+          context.lineTo(stroke.points[i].x, stroke.points[i].y);
+        }
+
+        context.stroke();
+      }
+
+      function renderDrawing() {
+        if (!drawContext) return;
+
+        drawContext.setTransform(1, 0, 0, 1, 0, 0);
+        drawContext.clearRect(0, 0, doodle.width, doodle.height);
+        drawContext.setTransform(drawScale, 0, 0, drawScale, 0, 0);
+
+        for (const stroke of strokes) {
+          paintStroke(drawContext, stroke);
+        }
+
+        if (liveStroke) paintStroke(drawContext, liveStroke);
+
+        $('drawingHint').hidden = Boolean(strokes.length || liveStroke);
+        $('undoDraw').disabled = !strokes.length;
+        $('clearDraw').disabled = !strokes.length;
+      }
+
+      function resizeDrawing() {
+        if (!drawContext) return;
+
+        const rect = doodle.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        doodle.width = Math.max(1, Math.round(rect.width * dpr));
+        doodle.height = Math.max(1, Math.round(doodle.width * DRAW_H / DRAW_W));
+        drawScale = doodle.width / DRAW_W;
+
+        renderDrawing();
+      }
+
+      function pointFromEvent(event) {
+        const rect = doodle.getBoundingClientRect();
+
+        return {
+          x: Math.max(0, Math.min(
+            DRAW_W,
+            (event.clientX - rect.left) / rect.width * DRAW_W
+          )),
+          y: Math.max(0, Math.min(
+            DRAW_H,
+            (event.clientY - rect.top) / rect.height * DRAW_H
+          ))
+        };
+      }
+
+      function finishStroke() {
+        if (liveStroke) {
+          strokes.push(liveStroke);
+          liveStroke = null;
+        }
+
+        const pointer = activePointer;
+        activePointer = null;
+
+        if (pointer !== null && doodle.hasPointerCapture(pointer)) {
+          doodle.releasePointerCapture(pointer);
+        }
+
+        renderDrawing();
+      }
+
+      if (drawContext) {
+        doodle.addEventListener('pointerdown', event => {
+          if (
+            !event.isPrimary ||
+            (event.pointerType === 'mouse' && event.button !== 0) ||
+            activePointer !== null
+          ) return;
+
+          if (strokes.length >= MAX_STROKES) {
+            toast('画布已经很热闹了，先保存作品，再清空继续画吧。');
+            return;
+          }
+
+          event.preventDefault();
+          activePointer = event.pointerId;
+          doodle.setPointerCapture(event.pointerId);
+
+          liveStroke = {
+            color: ink,
+            size: Number($('brushSize').value) * 1.45,
+            points: [pointFromEvent(event)]
+          };
+
+          renderDrawing();
+        });
+
+        doodle.addEventListener('pointermove', event => {
+          if (event.pointerId !== activePointer || !liveStroke) return;
+
+          const p = pointFromEvent(event);
+          const prev = liveStroke.points[liveStroke.points.length - 1];
+
+          if (Math.hypot(p.x - prev.x, p.y - prev.y) < 1) return;
+
+          liveStroke.points.push(p);
+
+          if (liveStroke.points.length >= MAX_POINTS) {
+            finishStroke();
+            toast('这条线先画到这里，可以抬起画笔再接着画。');
+          } else {
+            renderDrawing();
+          }
+        });
+
+        doodle.addEventListener('pointerup', event => {
+          if (event.pointerId !== activePointer || !liveStroke) return;
+
+          liveStroke.points.push(pointFromEvent(event));
+          finishStroke();
+        });
+
+        doodle.addEventListener('pointercancel', event => {
+          if (event.pointerId === activePointer) finishStroke();
+        });
+
+        doodle.addEventListener('lostpointercapture', () => {
+          if (liveStroke) finishStroke();
+        });
+
+        window.addEventListener('blur', finishStroke);
+
+        if ('ResizeObserver' in window) {
+          const observer = new ResizeObserver(resizeDrawing);
+          observer.observe(doodle);
+        } else {
+          window.addEventListener('resize', resizeDrawing);
+        }
+
+        resizeDrawing();
+      } else {
+        $('drawingHint').textContent = '当前浏览器不支持画布。其他文字小游戏仍然可以玩。';
+
+        for (const id of ['catDraw', 'undoDraw', 'clearDraw', 'saveDraw']) {
+          $(id).disabled = true;
+        }
+      }
+
+      document.querySelectorAll('[data-ink]').forEach(button => {
+        button.addEventListener('click', () => {
+          ink = button.dataset.ink;
+
+          document.querySelectorAll('[data-ink]').forEach(b => {
+            b.setAttribute('aria-pressed', String(b === button));
+          });
+        });
+      });
+
+      on('undoDraw', 'click', () => {
+        if (!strokes.length) return;
+
+        const group = strokes[strokes.length - 1].group;
+        strokes.pop();
+
+        if (group) {
+          while (strokes.length && strokes[strokes.length - 1].group === group) {
+            strokes.pop();
+          }
+        }
+
+        renderDrawing();
+      });
+
+      on('clearDraw', 'click', () => {
+        if (
+          strokes.length &&
+          !window.confirm('要清空这张涂鸦吗？还没有保存的画会消失。')
+        ) return;
+
+        strokes.length = 0;
+        liveStroke = null;
+        renderDrawing();
+      });
+
+      let drawingGroup = 0;
+
+      on('catDraw', 'click', () => {
+        if (!drawContext) return;
+
+        if (strokes.length > MAX_STROKES - 12) {
+          toast('先保存一下，再给 Neko 腾点位置吧。');
+          return;
+        }
+
+        const group = ++drawingGroup;
+        const shift = strokes.length ? (Math.random() - .5) * 190 : 0;
+
+        const lines = [
+          [[285,214],[291,128],[351,170],[425,170],[485,128],[494,214]],
+          [[285,214],[277,247],[285,287],[319,318],[355,332],[423,332],[465,314],[494,287],[503,247],[494,214]],
+          [[337,233],[337,245]],
+          [[445,233],[445,245]],
+          [[380,260],[392,269],[403,260]],
+          [[392,269],[381,283],[369,281]],
+          [[392,269],[404,283],[416,281]],
+          [[240,245],[304,256]],
+          [[235,276],[304,273]],
+          [[474,256],[543,244]],
+          [[473,274],[546,282]]
+        ];
+
+        lines.forEach(points => {
+          strokes.push({
+            group,
+            color: ink,
+            size: 4.6,
+            points: points.map(([x, y]) => ({
+              x: x + shift,
+              y
+            }))
+          });
+        });
+
+        renderDrawing();
+        toast('Neko 画了一张自画像。至于像不像，它没有说明。');
+      });
+
+      on('saveDraw', 'click', () => {
+        if (!drawContext) return;
+
+        const exportCanvas = document.createElement('canvas');
+        exportCanvas.width = 1600;
+        exportCanvas.height = 1000;
+
+        const exportContext = exportCanvas.getContext('2d');
+
+        if (!exportContext) {
+          toast('没有生成画布，请稍后再试。');
+          return;
+        }
+
+        exportContext.scale(2, 2);
+        exportContext.fillStyle = '#eeebe4';
+        exportContext.fillRect(0, 0, DRAW_W, DRAW_H);
+        exportContext.fillStyle = '#cfc9c4';
+
+        for (let x = 12; x < DRAW_W; x += 28) {
+          for (let y = 12; y < DRAW_H; y += 28) {
+            exportContext.beginPath();
+            exportContext.arc(x, y, 1, 0, Math.PI * 2);
+            exportContext.fill();
+          }
+        }
+
+        for (const stroke of strokes) {
+          paintStroke(exportContext, stroke);
+        }
+
+        if (liveStroke) paintStroke(exportContext, liveStroke);
+
+        try {
+          exportCanvas.toBlob(
+            blob => saveLocalBlob(blob, '随手画了几笔.png'),
+            'image/png'
+          );
+        } catch (_error) {
+          toast('保存暂时没成功，画还在。也可以直接截图留下。');
+        }
+      });
+
+      const loadingWords = {
+        prepare: [
+          '正在为准备工作准备一下。',
+          '已经开始考虑如何开始。',
+          '开始之前的准备快准备好了。',
+          '完成：已成功开始并结束了一次准备。'
+        ],
+        progress: [
+          '正在给进度条安排一点进度。',
+          '进度正在按照进度前进。',
+          '距离有进度已经更有进度了。',
+          '完成：进度条成功拥有了 100% 的进度。'
+        ],
+        nothing: [
+          '正在确认有没有什么事。',
+          '正在认真检查暂时没有的事情。',
+          '已接近确认没什么事。',
+          '完成：经过处理，目前依然没什么事。'
+        ]
+      };
+
+      let loadElapsed = 0;
+      let loadLast = 0;
+      let loadTimer = 0;
+      let loadRunning = false;
+      let loadStage = -1;
+
+      function updateLoad() {
+        const percent = Math.min(100, Math.floor(loadElapsed / 60));
+
+        $('loadNumber').textContent = String(percent);
+        $('loadFill').style.width = percent + '%';
+        $('loadTrack').setAttribute('aria-valuenow', String(percent));
+
+        const stage = percent === 100
+          ? 3
+          : Math.min(2, Math.floor(percent / 34));
+
+        if (stage !== loadStage) {
+          $('loadStatus').textContent = loadingWords[$('loadTask').value][stage];
+          loadStage = stage;
+        }
+
+        if (percent >= 100) {
+          window.clearInterval(loadTimer);
+          loadRunning = false;
+
+          $('startLoad').disabled = false;
+          $('startLoad').textContent = '再开始一次';
+          $('pauseLoad').disabled = true;
+          $('loadTask').disabled = false;
+        }
+      }
+
+      function loadTick() {
+        const now = performance.now();
+        loadElapsed = Math.min(6000, loadElapsed + (now - loadLast));
+        loadLast = now;
+        updateLoad();
+      }
+
+      function startLoad() {
+        if (loadRunning) return;
+        if (loadElapsed >= 6000) loadElapsed = 0;
+
+        loadRunning = true;
+        loadLast = performance.now();
+        loadStage = -1;
+
+        $('startLoad').disabled = true;
+        $('pauseLoad').disabled = false;
+        $('loadTask').disabled = true;
+
+        updateLoad();
+        window.clearInterval(loadTimer);
+        loadTimer = window.setInterval(loadTick, 100);
+      }
+
+      function pauseLoad(background = false) {
+        if (!loadRunning) return;
+
+        loadTick();
+        if (!loadRunning) return;
+
+        window.clearInterval(loadTimer);
+        loadRunning = false;
+
+        $('startLoad').disabled = false;
+        $('startLoad').textContent = '继续一下';
+        $('pauseLoad').disabled = true;
+
+        $('loadStatus').textContent = background
+          ? '你切走了，进度条也歇一会儿。回来后可点“继续一下”。'
+          : '已经暂停。现在正在认真地不往前走。';
+
+        loadStage = -1;
+      }
+
+      function resetLoad() {
+        window.clearInterval(loadTimer);
+
+        loadRunning = false;
+        loadElapsed = 0;
+        loadStage = -1;
+
+        $('loadNumber').textContent = '0';
+        $('loadFill').style.width = '0%';
+        $('loadTrack').setAttribute('aria-valuenow', '0');
+        $('loadStatus').textContent = '已经回到起点。起点对此没有任何意见。';
+
+        $('startLoad').disabled = false;
+        $('startLoad').textContent = '开始一下';
+        $('pauseLoad').disabled = true;
+        $('loadTask').disabled = false;
+      }
+
+      on('startLoad', 'click', startLoad);
+      on('pauseLoad', 'click', () => pauseLoad());
+      on('resetLoad', 'click', resetLoad);
+      on('loadTask', 'change', resetLoad);
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) pauseLoad(true);
+      });
+
+      const sceneWords = {
+        day: [
+          '白天的虚构窗景，有太阳、云、山丘和 Neko',
+          '天亮了。这束光没有接入电网。'
+        ],
+        dawn: [
+          '傍晚的虚构窗景，有夕阳、云、山丘和 Neko',
+          '傍晚了。晚霞只负责晚霞，不负责晚饭。'
+        ],
+        night: [
+          '夜里的虚构窗景，有月亮、云、山丘和 Neko',
+          '夜里了。Neko 没有说明它几点睡。'
+        ]
+      };
+
+      document.querySelectorAll('button[data-sky]').forEach(button => {
+        button.addEventListener('click', () => {
+          const sky = button.dataset.sky;
+
+          $('scene').dataset.sky = sky;
+          $('scene').setAttribute('aria-label', sceneWords[sky][0]);
+          $('sceneNote').textContent = sceneWords[sky][1];
+
+          document.querySelectorAll('button[data-sky]').forEach(b => {
+            b.setAttribute('aria-pressed', String(b === button));
+          });
+        });
+      });
+
+      on('windowCat', 'click', () => {
+        $('sceneNote').textContent = 'Neko 说：我在看窗外。至于窗外有什么，你也在看。';
+      });
+
+      on('bottomExtra', 'click', () => {
+        toast('已经到底了。这里为了让你确认到底，又放了一个按钮。');
+      });
+
+      function jumpToToy(id, focusId) {
+        $(id).scrollIntoView({
+          behavior: motionReduced() ? 'auto' : 'smooth',
+          block: 'start'
+        });
+
+        if (focusId) $(focusId).focus({ preventScroll: true });
+      }
+
+      const originalHelp = actions.get('help');
+
+      actions.set('help', () => {
+        originalHelp();
+
+        print(
+          '\n也可以去玩：\n' +
+          'receipt / 小票 [主题]  开一张没有消费的小票\n' +
+          'box / 意见箱          找一下并不办事的 Neko\n' +
+          'draw / 画画           去随手画两笔\n' +
+          'load / 加载           去看看没有任务的进度条\n' +
+          'window / 窗户         看看不朝向任何地方的窗\n' +
+          'nothing / 没事        进行一次无事发生\n' +
+          'nap / 休息            看看正在休息的 Neko'
+        );
+      });
+
+      actions.set('receipt', topic => {
+        if (topic) $('receiptTopic').value = shortText(topic, 24);
+
+        makeReceipt();
+        print('小票已经开好。金额是零，废话不止零。');
+        jumpToToy('receiptToy', 'receiptTopic');
+      });
+
+      actions.set('box', () => {
+        print('Neko 意见箱在下面。注意：这是本地文字玩具，不会给站长发消息。');
+        jumpToToy('opinionToy', 'opinionText');
+      });
+
+      actions.set('draw', () => {
+        print('画布在下面。画一条线，也算画了一条线。');
+        jumpToToy('doodleToy', 'doodle');
+      });
+
+      actions.set('load', () => {
+        print('进度条还没开始。是否开始，由你决定。');
+        jumpToToy('loaderToy', 'startLoad');
+      });
+
+      actions.set('window', () => {
+        print('这扇窗不朝向任何地方，但确实朝向了一点画面。');
+        jumpToToy('scene', 'windowCat');
+      });
+
+      actions.set('nothing', () => {
+        print('正在执行：什么也不做。\n\n执行完成。\n除了这几行字，确实没有发生什么。');
+      });
+
+      actions.set('nap', () => {
+        print(' /\\_/\\   z Z\n( -.- )\n /   \\\n\nNeko 只是歇一会儿，没有倒计时，也不用叫醒它。');
+      });
+
+      [
+        ['小票', 'receipt'],
+        ['意见箱', 'box'],
+        ['画画', 'draw'],
+        ['加载', 'load'],
+        ['窗户', 'window'],
+        ['没事', 'nothing'],
+        ['休息', 'nap']
+      ].forEach(([alias, command]) => {
+        aliases.set(alias, command);
+      });
+
+      const visitorState = {
+        ip: '',
+        country: '',
+        detail: '',
+        isp: '',
+        asn: '',
+        provider: '',
+        queriedAt: '',
+        phase: 'idle',
+        duration: 0
+      };
+
+      let visitorBusy = false;
+      let lastVisitorQuery = -Infinity;
+      let visitorRetryTimer = 0;
+
+      const visitorClockFormat = clockFormat;
+
+      const cleanField = value => (
+        typeof value === 'string' || typeof value === 'number'
+      )
+        ? String(value).replace(/[\u0000-\u001f\u007f]/gu, '').trim().slice(0, 160)
+        : '';
+
+      let regionNames = null;
+
+      try {
+        regionNames = new Intl.DisplayNames(['zh-CN'], { type: 'region' });
+      } catch (_error) {}
+
+      function logSignal(message) {
+        const row = document.createElement('p');
+        const time = document.createElement('time');
+        const now = new Date();
+
+        time.dateTime = now.toISOString();
+        time.textContent = visitorClockFormat.format(now);
+
+        row.append(time, document.createTextNode(message));
+        $('signalLog').appendChild(row);
+
+        while ($('signalLog').children.length > 12) {
+          $('signalLog').firstElementChild.remove();
+        }
+
+        $('signalLog').scrollTop = $('signalLog').scrollHeight;
+      }
+
+      function visitorBadge(state, text) {
+        $('signalBadge').dataset.state = state;
+        $('signalBadgeText').textContent = text;
+      }
+
+      function browserSummary() {
+        const ua = navigator.userAgent || '';
+
+        const patterns = [
+          [/Edg(?:e|A|iOS)?\/(\d+)/, 'Edge'],
+          [/OPR\/(\d+)/, 'Opera'],
+          [/SamsungBrowser\/(\d+)/, 'Samsung Internet'],
+          [/Firefox\/(\d+)/, 'Firefox'],
+          [/FxiOS\/(\d+)/, 'Firefox'],
+          [/CriOS\/(\d+)/, 'Chrome'],
+          [/(?:Chrome|Chromium)\/(\d+)/, 'Chrome / Chromium'],
+          [/Version\/(\d+).*Safari\//, 'Safari']
+        ];
+
+        let browser = '未能识别';
+
+        for (const [pattern, name] of patterns) {
+          const match = ua.match(pattern);
+
+          if (match) {
+            browser = name + ' ' + match[1];
+            break;
+          }
+        }
+
+        const hints = navigator.userAgentData;
+
+        if (hints && Array.isArray(hints.brands)) {
+          const brand = hints.brands.find(x => (
+            /^(Google Chrome|Microsoft Edge|Opera|Brave)$/.test(x.brand)
+          ));
+
+          if (brand) {
+            browser = (
+              brand.brand.replace('Google ', '').replace('Microsoft ', '') +
+              ' ' +
+              cleanField(brand.version)
+            );
+          }
+        }
+
+        let os = '系统未能识别';
+
+        if (/iPad/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1)) {
+          os = 'iPadOS';
+        } else if (/iPhone|iPod/.test(ua)) {
+          os = 'iOS';
+        } else if (/Android/.test(ua)) {
+          os = 'Android';
+        } else if (/Windows/.test(ua)) {
+          os = 'Windows';
+        } else if (/CrOS/.test(ua)) {
+          os = 'ChromeOS';
+        } else if (/Macintosh|Mac OS/.test(ua)) {
+          os = 'macOS';
+        } else if (/Linux/.test(ua)) {
+          os = 'Linux';
+        }
+
+        return { browser, os };
+      }
+
+      function updateBrowserPanel() {
+        const device = browserSummary();
+
+        $('visitorBrowser').textContent = device.browser;
+        $('visitorOS').textContent = device.os + ' · 浏览器报告';
+        $('visitorZone').textContent = SITE_TIME_LABEL + ' · SITE TIME';
+        $('visitorClock').textContent = visitorClockFormat.format(new Date());
+
+        const protocol = location.protocol === 'https:'
+          ? 'HTTPS'
+          : location.protocol === 'http:'
+            ? 'HTTP'
+            : location.protocol === 'file:'
+              ? '本地文件'
+              : '当前页面';
+
+        $('visitorProtocol').textContent = `${protocol} · DOM 就绪，不是网速`;
+
+        const entries = typeof performance.getEntriesByType === 'function'
+          ? performance.getEntriesByType('navigation')
+          : [];
+
+        const nav = entries[0];
+
+        $('visitorDOM').textContent = nav && nav.domContentLoadedEventEnd > 0
+          ? Math.round(Math.max(0, nav.domContentLoadedEventEnd - nav.startTime)) + ' ms'
+          : '等待就绪';
+
+        if (!nav) $('visitorDOM').textContent = '浏览器未提供';
+
+        const online = navigator.onLine;
+
+        $('visitorOnline').textContent = '浏览器报告：' + (
+          online === true
+            ? '在线（不等于外网畅通）'
+            : online === false
+              ? '离线'
+              : '连接状态未提供'
+        );
+      }
+
+      function validIP(value) {
+        const ip = cleanField(value);
+
+        if (ip.includes(':')) {
+          if (!/^[0-9a-f:.]+$/i.test(ip)) return '';
+
+          try {
+            new URL('https://[' + ip + ']/');
+            return ip;
+          } catch (_error) {
+            return '';
+          }
+        }
+
+        const parts = ip.split('.');
+
+        return parts.length === 4 && parts.every(p => (
+          /^(0|[1-9]\d{0,2})$/.test(p) && Number(p) <= 255
+        )) ? ip : '';
+      }
+
+      function normalizeVisitor(data, provider) {
+        if (!data || typeof data !== 'object' || data.success === false || data.error) {
+          throw new Error('invalid-response');
+        }
+
+        const ip = validIP(data.ip);
+        if (!ip) throw new Error('invalid-address');
+
+        const code = cleanField(data.country_code).toUpperCase();
+        let country = cleanField(data.country);
+
+        if (/^[A-Z]{2}$/.test(code) && regionNames) {
+          try {
+            country = regionNames.of(code) || country;
+          } catch (_error) {}
+        }
+
+        const region = cleanField(data.region);
+        const city = cleanField(data.city);
+
+        const parts = [...new Set(
+          [region, city].filter(p => p && p !== country)
+        )];
+
+        const connection = data.connection && typeof data.connection === 'object'
+          ? data.connection
+          : {};
+
+        const rawASN = cleanField(connection.asn || data.asn);
+
+        const asn = /^(?:AS)?\d+$/i.test(rawASN)
+          ? 'AS' + rawASN.replace(/^AS/i, '')
+          : '';
+
+        return {
+          ip,
+          country,
+          detail: parts.join(' · '),
+          isp: cleanField(
+            connection.isp ||
+            connection.org ||
+            data.isp ||
+            data.organization ||
+            data.asn_organization
+          ),
+          asn,
+          provider
+        };
+      }
+
+      const visitorProviders = [
+        {
+          name: 'IPWHOIS.io',
+          url: 'https://ipwho.is/?lang=zh-CN&fields=success,ip,type,country,country_code,region,city,connection.asn,connection.org,connection.isp',
+          timeout: 5500
+        },
+        {
+          name: 'IP.SB',
+          url: 'https://api.ip.sb/geoip',
+          timeout: 5500
+        },
+        {
+          name: 'ipify',
+          url: 'https://api64.ipify.org?format=json',
+          timeout: 4500
+        }
+      ];
+
+      async function requestVisitor(provider) {
+        const controller = new AbortController();
+        const timeout = window.setTimeout(() => controller.abort(), provider.timeout);
+        const start = performance.now();
+
+        try {
+          const response = await fetch(provider.url, {
+            signal: controller.signal,
+            mode: 'cors',
+            credentials: 'omit',
+            cache: 'no-store',
+            referrerPolicy: 'no-referrer'
+          });
+
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+
+          const data = await response.json();
+
+          return {
+            ...normalizeVisitor(data, provider.name),
+            duration: Math.round(performance.now() - start)
+          };
+        } finally {
+          clearTimeout(timeout);
+        }
+      }
+
+      function renderVisitor() {
+        const hasLocation = Boolean(visitorState.country || visitorState.detail);
+
+        $('publicIP').textContent = visitorState.ip;
+
+        const version = visitorState.ip.includes(':') ? 'IPv6' : 'IPv4';
+
+        $('publicIP').classList.toggle('ipv6', version === 'IPv6');
+        $('ipVersion').hidden = false;
+        $('ipVersion').textContent = version;
+        $('copyIP').disabled = false;
+
+        $('originCountry').textContent = visitorState.country || '归属地暂未获取';
+
+        $('originDetail').textContent = visitorState.detail || (
+          hasLocation
+            ? '接口未提供更细的地区。到这里也算来自这里。'
+            : 'IP 已收到，地点没有跟着来。'
+        );
+
+        $('visitorISP').textContent = visitorState.isp || '接口未提供';
+        $('visitorASN').textContent = visitorState.asn || '未提供';
+
+        $('queryState').textContent =
+          `${visitorState.provider} · 查询于 ${visitorState.queriedAt} ${SITE_TIME_LABEL}`;
+
+        $('queryDuration').textContent =
+          `本次接口请求 ${visitorState.duration} ms · 非 Ping`;
+
+        visitorBadge(
+          hasLocation ? 'ready' : 'partial',
+          hasLocation ? '信号已收到' : '已获取 IP'
+        );
+      }
+
+      async function queryVisitor() {
+        if (visitorBusy) return;
+
+        const wait = 30000 - (performance.now() - lastVisitorQuery);
+
+        if (wait > 0) {
+          toast(`先等 ${Math.ceil(wait / 1000)} 秒再查，接口也需要喘口气。`);
+          return;
+        }
+
+        visitorBusy = true;
+        lastVisitorQuery = performance.now();
+        visitorState.phase = 'loading';
+
+        $('refreshVisitor').disabled = true;
+        $('refreshVisitor').textContent = 'Querying…';
+        visitorBadge('loading', '正在收信号');
+
+        if (!visitorState.ip) {
+          $('publicIP').textContent = '查询中…';
+          $('originCountry').textContent = '等信号说句话';
+        } else {
+          $('queryState').textContent = '正在重查，先保留上次结果';
+        }
+
+        let success = false;
+
+        try {
+          for (const provider of visitorProviders) {
+            logSignal('联系 ' + provider.name + '，查询本次网络出口');
+
+            try {
+              const result = await requestVisitor(provider);
+
+              Object.assign(visitorState, result, {
+                phase: 'ready',
+                queriedAt: visitorClockFormat.format(new Date())
+              });
+
+              renderVisitor();
+              success = true;
+
+              logSignal(provider.name + ' 已返回 ' + (
+                result.country || result.detail
+                  ? 'IP 与大致归属地'
+                  : 'IP（未提供归属地）'
+              ));
+
+              break;
+            } catch (error) {
+              const reason = error && error.name === 'AbortError'
+                ? '超时'
+                : error && /^HTTP \d+$/.test(error.message)
+                  ? error.message
+                  : '未能获取结果';
+
+              logSignal(provider.name + '：' + reason);
+            }
+          }
+
+          if (!success) {
+            visitorState.phase = 'error';
+
+            visitorBadge(
+              'error',
+              visitorState.ip ? '暂留上次结果' : '信号暂未收到'
+            );
+
+            if (!visitorState.ip) {
+              $('publicIP').textContent = '暂未获取';
+              $('originCountry').textContent = '暂时是个谜';
+              $('originDetail').textContent = '接口暂未回复。不过你已经到这里了。';
+              $('visitorISP').textContent = '暂未获取';
+              $('visitorASN').textContent = '—';
+            }
+
+            $('queryState').textContent = visitorState.ip
+              ? `重查失败 · 仍为 ${visitorState.queriedAt} ${SITE_TIME_LABEL} 的结果`
+              : '可能限流、网络阻断或接口暂不可用';
+
+            $('queryDuration').textContent = visitorState.ip
+              ? `上次接口请求 ${visitorState.duration} ms · 非 Ping`
+              : '未获取的数据不会猜测';
+          }
+        } finally {
+          visitorBusy = false;
+          clearTimeout(visitorRetryTimer);
+
+          const enableAfter = Math.max(
+            0,
+            30000 - (performance.now() - lastVisitorQuery)
+          );
+
+          $('refreshVisitor').textContent = enableAfter > 0
+            ? 'Please wait'
+            : '↻ Refresh';
+
+          $('refreshVisitor').disabled = enableAfter > 0;
+
+          if (enableAfter > 0) {
+            visitorRetryTimer = window.setTimeout(() => {
+              $('refreshVisitor').disabled = false;
+              $('refreshVisitor').textContent = '↻ Refresh';
+            }, enableAfter);
+          }
+        }
+      }
+
+      on('refreshVisitor', 'click', queryVisitor);
+
+      on('copyIP', 'click', async () => {
+        if (!visitorState.ip) return;
+
+        try {
+          if (!navigator.clipboard || !navigator.clipboard.writeText) {
+            throw new Error('clipboard-unavailable');
+          }
+
+          await navigator.clipboard.writeText(visitorState.ip);
+          toast('IP 已复制。现在剪贴板里也有这个 IP 了。');
+        } catch (_error) {
+          const selection = window.getSelection();
+          const range = document.createRange();
+
+          range.selectNodeContents($('publicIP'));
+
+          if (selection) {
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
+
+          toast('浏览器未允许自动复制；IP 已选中，可手动复制。');
+        }
+      });
+
+      updateBrowserPanel();
+
+      window.addEventListener('load', () => {
+        setTimeout(updateBrowserPanel, 0);
+      }, { once: true });
+
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(updateBrowserPanel, 0);
+      }, { once: true });
+
+      window.addEventListener('online', () => {
+        updateBrowserPanel();
+        logSignal('浏览器报告恢复在线；需要时可重新查询 IP');
+      });
+
+      window.addEventListener('offline', () => {
+        updateBrowserPanel();
+        logSignal('浏览器报告离线；保留当前页面内容');
+      });
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) updateBrowserPanel();
+      });
+
+      setInterval(() => {
+        if (!document.hidden) {
+          $('visitorClock').textContent = visitorClockFormat.format(new Date());
+        }
+      }, 1000);
+
+      logSignal('本地浏览器信息已读取');
+      queryVisitor();
+
+      function visitorReport() {
+        if (!visitorState.ip) {
+          return visitorState.phase === 'loading'
+            ? 'IP 与归属地正在查询，面板收到以后会显示。'
+            : '暂未获取 IP / 归属地。可以稍后在访客面板重新查询。';
+        }
+
+        const stale = visitorState.phase === 'error'
+          ? '\n注意：重查失败，以下为上次结果。'
+          : '';
+
+        const locationText = [
+          visitorState.country,
+          visitorState.detail
+        ].filter(Boolean).join(' · ') || '未提供';
+
+        return (
+          `网络出口：${visitorState.ip}\n` +
+          `IP 归属地：${locationText}\n` +
+          `运营商 / 组织：${visitorState.isp || '未提供'}\n` +
+          `ASN：${visitorState.asn || '未提供'}\n` +
+          `来源：${visitorState.provider} · ${visitorState.queriedAt} ${SITE_TIME_LABEL}${stale}\n\n` +
+          '这是查询接口看到的网络出口，不是 GPS 定位。'
+        );
+      }
+
+      actions.set('ip', () => print(visitorReport()));
+
+      actions.set('where', () => print(
+        visitorReport() + '\n\n不论信号来自哪里，你现在都在这个页面里。'
+      ));
+
+      actions.set('device', () => {
+        updateBrowserPanel();
+
+        print(
+          `${$('visitorBrowser').textContent}\n` +
+          `${$('visitorOS').textContent}\n` +
+          `页面时间：${$('visitorClock').textContent} ${SITE_TIME_LABEL}\n` +
+          `${$('visitorZone').textContent}\n\n` +
+          '这里只展示浏览器允许读取的信息，不推测具体硬件。'
+        );
+      });
+
+      actions.set('neofetch', () => {
+        updateBrowserPanel();
+
+        print(
+          ' /\\_/\\      visitor@这里\n' +
+          '( o.o )     --------------------\n' +
+          ` > ^ <      浏览器  ${$('visitorBrowser').textContent}\n` +
+          `            系统    ${$('visitorOS').textContent}\n` +
+          `            时间    ${$('visitorClock').textContent} ${SITE_TIME_LABEL}\n` +
+          `            公网 IP ${visitorState.ip || '暂未获取'}\n` +
+          `            停留    ${formatElapsed()}\n\n` +
+          'Neko 是页面里的文字角色，数据来自当前浏览器。'
+        );
+      });
+
+      actions.set('network', () => {
+        print('访客信号接收站在上面。它负责解释信号，不负责解释人生。');
+        jumpToToy('visitorStation', 'signalLog');
+      });
+
+      const helpBeforeVisitor = actions.get('help');
+
+      actions.set('help', () => {
+        helpBeforeVisitor();
+
+        print(
+          '\n访客信息：\n' +
+          'ip / IP             当前查询到的公网 IP\n' +
+          'where / 我在哪      IP 的大致归属地\n' +
+          'device / 设备       浏览器、系统与 UTC+08:00 时间\n' +
+          'neofetch            Neko 风格的信息卡\n' +
+          'network / 网络      前往访客信号接收站\n\n' +
+          '这些命令不执行系统操作，也不会读取内网地址。'
+        );
+      });
+
+      [
+        ['我在哪', 'where'],
+        ['哪里', 'where'],
+        ['设备', 'device'],
+        ['网络', 'network']
+      ].forEach(([alias, command]) => {
+        aliases.set(alias, command);
+      });
+
+      const orbCanvas = $('visitorOrb');
+      const orbContext = orbCanvas.getContext('2d');
+
+      let orbW = 0;
+      let orbH = 0;
+      let orbFrame = 0;
+      let orbLast = 0;
+      let orbVisible = true;
+
+      function resizeOrb() {
+        if (!orbContext) return;
+
+        const rect = orbCanvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        orbW = rect.width;
+        orbH = rect.height;
+
+        orbCanvas.width = Math.max(1, Math.round(orbW * dpr));
+        orbCanvas.height = Math.max(1, Math.round(orbH * dpr));
+
+        orbContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawOrb(performance.now());
+      }
+
+      function drawOrb(now) {
+        if (!orbContext || !orbW || !orbH) return;
+
+        const c = orbContext;
+        const x0 = orbW / 2;
+        const y0 = orbH / 2;
+        const r = Math.min(orbW, orbH) * .335;
+        const angle = motionReduced() ? .5 : now / 16000;
+
+        c.clearRect(0, 0, orbW, orbH);
+
+        const glow = c.createRadialGradient(
+          x0, y0, r * .15,
+          x0, y0, r * 1.55
+        );
+
+        glow.addColorStop(0, 'rgba(62,158,189,.13)');
+        glow.addColorStop(1, 'rgba(62,158,189,0)');
+
+        c.fillStyle = glow;
+        c.fillRect(0, 0, orbW, orbH);
+
+        const project = (lat, lon) => {
+          const x = Math.cos(lat) * Math.sin(lon + angle);
+          const y = Math.sin(lat);
+          const z = Math.cos(lat) * Math.cos(lon + angle);
+          const tilt = -.28;
+
+          const yt = y * Math.cos(tilt) - z * Math.sin(tilt);
+          const zt = y * Math.sin(tilt) + z * Math.cos(tilt);
+
+          return {
+            x: x0 + x * r,
+            y: y0 - yt * r,
+            z: zt
+          };
+        };
+
+        function curve(points) {
+          for (let i = 1; i < points.length; i++) {
+            const a = points[i - 1];
+            const b = points[i];
+            const depth = (a.z + b.z) / 2;
+
+            c.strokeStyle = `rgba(117,221,247,${depth > 0 ? .17 + .3 * depth : .065})`;
+            c.lineWidth = .65;
+
+            c.beginPath();
+            c.moveTo(a.x, a.y);
+            c.lineTo(b.x, b.y);
+            c.stroke();
+          }
+        }
+
+        for (
+          let lat = -Math.PI / 3;
+          lat <= Math.PI / 3 + .01;
+          lat += Math.PI / 6
+        ) {
+          const pts = [];
+
+          for (let i = 0; i <= 64; i++) {
+            pts.push(project(lat, i * Math.PI * 2 / 64));
+          }
+
+          curve(pts);
+        }
+
+        for (let j = 0; j < 12; j++) {
+          const pts = [];
+
+          for (let i = 0; i <= 32; i++) {
+            pts.push(project(
+              -Math.PI / 2 + i * Math.PI / 32,
+              j * Math.PI / 6
+            ));
+          }
+
+          curve(pts);
+        }
+
+        for (let j = 0; j < 12; j++) {
+          for (let k = -2; k <= 2; k++) {
+            const p = project(k * Math.PI / 6, j * Math.PI / 6);
+            if (p.z < 0) continue;
+
+            c.beginPath();
+            c.arc(p.x, p.y, 1.4, 0, Math.PI * 2);
+            c.fillStyle = `rgba(156,230,247,${.3 + .5 * p.z})`;
+            c.fill();
+          }
+        }
+
+        c.lineWidth = .8;
+        c.strokeStyle = 'rgba(117,221,247,.22)';
+        c.beginPath();
+        c.arc(x0, y0, r, 0, Math.PI * 2);
+        c.stroke();
+
+        c.strokeStyle = 'rgba(165,153,255,.35)';
+        c.beginPath();
+        c.ellipse(x0, y0, r * 1.42, r * .45, -.45, 0, Math.PI * 2);
+        c.stroke();
+
+        const orbit = motionReduced() ? 1 : now / 3600;
+        const ox = r * 1.42 * Math.cos(orbit);
+        const oy = r * .45 * Math.sin(orbit);
+        const px = x0 + ox * Math.cos(-.45) - oy * Math.sin(-.45);
+        const py = y0 + ox * Math.sin(-.45) + oy * Math.cos(-.45);
+
+        c.shadowColor = '#9dccff';
+        c.shadowBlur = 10;
+        c.fillStyle = '#b9edff';
+        c.beginPath();
+        c.arc(px, py, 2.6, 0, Math.PI * 2);
+        c.fill();
+        c.shadowBlur = 0;
+
+        for (let i = 0; i < 60; i++) {
+          const a = i * Math.PI / 30;
+          const rl = r * 1.29;
+          const rr = rl + (i % 5 === 0 ? 5 : 2);
+
+          c.strokeStyle = i % 5 === 0
+            ? 'rgba(117,221,247,.32)'
+            : 'rgba(117,221,247,.13)';
+
+          c.beginPath();
+          c.moveTo(x0 + Math.cos(a) * rl, y0 + Math.sin(a) * rl);
+          c.lineTo(x0 + Math.cos(a) * rr, y0 + Math.sin(a) * rr);
+          c.stroke();
+        }
+      }
+
+      function orbLoop(now) {
+        if (now - orbLast > 32) {
+          drawOrb(now);
+          orbLast = now;
+        }
+
+        orbFrame = requestAnimationFrame(orbLoop);
+      }
+
+      function syncOrb() {
+        cancelAnimationFrame(orbFrame);
+        orbLast = 0;
+
+        if (!orbContext || document.hidden || !orbVisible) return;
+
+        if (motionReduced()) {
+          drawOrb(performance.now());
+        } else {
+          orbFrame = requestAnimationFrame(orbLoop);
+        }
+      }
+
+      if (orbContext) {
+        resizeOrb();
+        syncOrb();
+
+        if ('ResizeObserver' in window) {
+          const observer = new ResizeObserver(resizeOrb);
+          observer.observe(orbCanvas);
+        } else {
+          window.addEventListener('resize', resizeOrb);
+        }
+
+        if ('IntersectionObserver' in window) {
+          const observer = new IntersectionObserver(entries => {
+            orbVisible = entries[0].isIntersecting;
+            syncOrb();
+          }, { rootMargin: '100px' });
+
+          observer.observe(orbCanvas);
+        }
+
+        document.addEventListener('visibilitychange', syncOrb);
+        reducedMotion.addEventListener('change', syncOrb);
+      }
+
+      welcome();
+
+      const konami = [
+        'ArrowUp',
+        'ArrowUp',
+        'ArrowDown',
+        'ArrowDown',
+        'ArrowLeft',
+        'ArrowRight',
+        'ArrowLeft',
+        'ArrowRight',
+        'b',
+        'a'
+      ];
+
+      let secretKeys = [];
+
+      document.addEventListener('keydown', event => {
+        const target = event.target;
+
+        if (
+          event.isComposing ||
+          (
+            target instanceof HTMLElement &&
+            (
+              target.isContentEditable ||
+              /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)
+            )
+          )
+        ) return;
+
+        if (event.ctrlKey || event.metaKey || event.altKey) return;
+
+        const key = event.key.length === 1
+          ? event.key.toLowerCase()
+          : event.key;
+
+        if (secretKeys.length > 0 && key === konami[secretKeys.length]) {
+          event.preventDefault();
+        }
+
+        secretKeys.push(key);
+
+        if (secretKeys.length > konami.length) {
+          secretKeys.shift();
+        }
+
+        if (secretKeys.every((item, index) => item === konami[index])) {
+          if (secretKeys.length === konami.length) {
+            catParty();
+            secretKeys = [];
+          }
+        } else {
+          secretKeys = key === konami[0] ? [key] : [];
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
